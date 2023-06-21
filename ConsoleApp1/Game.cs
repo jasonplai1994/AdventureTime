@@ -31,7 +31,7 @@ namespace ConsoleApp1
                 Type = NPCType.Merchant,
                 Items = new List<Equipment> { 
                     new Equipment { Name = "HealthPotion", Value = 10 },
-                    new Equipment { Name = "Sword", Value = 50 }, 
+                    new Equipment { Name = "Weapon", Value = 50 }, 
                     new Equipment { Name = "Armor", Value = 30 },
                     new Equipment { Name = "Ring", Value = 60 },
                     new Equipment { Name = "Amulet", Value = 90 },
@@ -129,13 +129,13 @@ namespace ConsoleApp1
 
                 switch (action)
                 {
-                    case "equip":
+                    case "Equip":
                         ProcessEquipItem(targetItem);
                         break;
-                    case "unequip":
+                    case "Unequip":
                         ProcessUnequipItem(targetItem);
                         break;
-                    case "use":
+                    case "Use":
                         ProcessUseItem(targetItem);
                         break;
                         // Other command processing...
@@ -405,7 +405,7 @@ namespace ConsoleApp1
             if (item != null && item.IsEquipped)
             {
                 Player.Inventory.Remove( item );
-                item.IsEquipped= false;
+                item.IsEquipped = false;
                 Player.Inventory.Add( item );
             }
 

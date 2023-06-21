@@ -109,7 +109,7 @@ public class Program
                     case "8":
                         Console.WriteLine("Select an item to Equip: ");
                         itemName = Console.ReadLine();
-                        game.ProcessCommand("Equip");
+                        game.ProcessCommand("EquipItem");
                         break;
 
                     case "9":
