@@ -43,10 +43,6 @@ namespace ConsoleApp1
                 Type = NPCType.Enemy
 
             });
-
-
-
-
         }
 
         // Play Turn
