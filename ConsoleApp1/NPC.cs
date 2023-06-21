@@ -16,6 +16,6 @@ namespace ConsoleApp1
         public int AC { get; set; } = 10; // Default AC value
         public int AttackValue { get; set; } = 5; // Default Attack Value
         public List<Quest> Quests { get; set; } = new List<Quest>();
-        public List<Item> Items { get; set; } = new List<Item>();
+        public List<Equipment> Items { get; set; } = new List<Equipment>();
     }
 }

@@ -13,3 +13,14 @@ C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\obj\Debug\net6.0\refint\Cons
 C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\obj\Debug\net6.0\ConsoleApp1.pdb
 C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\obj\Debug\net6.0\ConsoleApp1.genruntimeconfig.cache
 C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\obj\Debug\net6.0\ref\ConsoleApp1.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.Extensions.Logging.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\obj\Debug\net6.0\ConsoleApp1.csproj.CopyComplete

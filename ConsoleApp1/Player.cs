@@ -17,11 +17,17 @@ namespace ConsoleApp1
         public string Location { get; set; } = "Start";
         public string Description { get; set; } = "player 1";
         public int Gold { get; set; } = 50;
-        public List<string> Inventory { get; set; } = new List<string>();
+        public List<Equipment> Inventory { get; set; } = new List<Equipment>();
         public string Quest { get; set; } = "None";
         public Dictionary<string, int> Abilities { get; set; } = new Dictionary<string, int>();
 
         private Random random = new Random();
+
+        public Equipment Weapon { get; set; }
+        public Equipment Armor { get; set; }
+        public Equipment Ring { get; set; }
+        public Equipment Amulet { get; set; }
+        public Equipment Useable { get; set; }
 
         // Generate Abilities
         public void GenerateAbilities(Random rng)
@@ -61,7 +67,7 @@ namespace ConsoleApp1
                 Abilities.Remove("Persuasion");
                 Abilities.Add("Persuasion", Persuasion);
 
-                Abilities.TryGetValue("Stength", out int Strength);
+                Abilities.TryGetValue("Strength", out int Strength);
                 Strength += random.Next(1, 6);
                 Abilities.Remove("Strength");
                 Abilities.Add("Strength", Strength);

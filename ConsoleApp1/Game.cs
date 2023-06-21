@@ -29,7 +29,14 @@ namespace ConsoleApp1
             {
                 Name = "Merchant",
                 Type = NPCType.Merchant,
-                Items = new List<Item> { new Item { Name = "HealthPotion", Price = 10 } }
+                Items = new List<Equipment> { 
+                    new Equipment { Name = "HealthPotion", Value = 10 },
+                    new Equipment { Name = "Sword", Value = 50 }, 
+                    new Equipment { Name = "Armor", Value = 30 },
+                    new Equipment { Name = "Ring", Value = 60 },
+                    new Equipment { Name = "Amulet", Value = 90 },
+                    new Equipment { Name = "Shield", Value = 30 }
+                }
             });
             NPCs.Add(new NPC
             {
@@ -73,8 +80,15 @@ namespace ConsoleApp1
         {
             // Implement your own game logic
             var parts = command.Split(' ');
-            Console.WriteLine(parts.Length);
-
+            if (parts.Length == 1)
+            {
+                var action = parts[0];
+                if (action == "Inventory")
+                {
+                    ProcessInventory();
+                    return;
+                }
+            }
             if (parts.Length == 2)
             {
                 var action = parts[0];
@@ -105,9 +119,29 @@ namespace ConsoleApp1
                     Console.WriteLine("Invalid action");
                 }
                 return;
+            }                       
+                // Existing command processing code...
+                // Equipment
+                if (true)
+            {            
+                var action = parts[0];
+                var targetItem = parts.Length > 1 ? parts[1] : string.Empty;
 
-
+                switch (action)
+                {
+                    case "equip":
+                        ProcessEquipItem(targetItem);
+                        break;
+                    case "unequip":
+                        ProcessUnequipItem(targetItem);
+                        break;
+                    case "use":
+                        ProcessUseItem(targetItem);
+                        break;
+                        // Other command processing...
+                }
             }
+                
 
             // Example of command: "buy Health Potion from Merchant"
             //var parts = command.Split(' ');
@@ -199,6 +233,10 @@ namespace ConsoleApp1
             Console.WriteLine($"Inventory: {string.Join(", ", Player.Inventory)}");
             Console.WriteLine($"Quest: {Player.Quest}");
             Console.WriteLine($"Abilities: {string.Join(", ", Player.Abilities)}");
+            Console.WriteLine($"Weapon: {Player.Weapon?.Name ?? "None"}");
+            Console.WriteLine($"Armor: {Player.Armor?.Name ?? "None"}");
+            Console.WriteLine($"Ring: {Player.Ring?.Name ?? "None"}");
+            Console.WriteLine($"Amulet: {Player.Amulet?.Name ?? "None"}");
         }
 
         private void ProcessAttack(NPC target)
@@ -211,6 +249,7 @@ namespace ConsoleApp1
                 var damage = rng.Next(1, 11) + Player.Abilities["Strength"] / 3; // Assuming weapon damage of 1d10
                 target.Health -= damage;
                 Console.WriteLine($"You dealt {damage} damage to {target.Name}. Remaining Enemy Health: " + target.Health);
+
 
                 if (target.Health <= 0)
                 {
@@ -259,11 +298,15 @@ namespace ConsoleApp1
                 return;
             }
 
-            if (Player.Gold >= item.Price)
+            if (Player.Gold >= item.Value)
             {
-                Player.Gold -= item.Price;
-                Player.Inventory.Add(item.Name);
-                Console.WriteLine($"\nYou bought {item.Name}. Gold Remaining: " + Player.Gold);
+                Player.Gold -= item.Value;
+                Equipment equipment = new Equipment();
+                equipment.Name = itemName;  
+                equipment.Value = item.Value;
+                equipment.Type = EquipmentType.Useable;
+                Player.Inventory.Add(equipment);
+                Console.WriteLine($"\nYou bought {equipment.Name}. Gold Remaining: " + Player.Gold);
                 Console.WriteLine();
             }
             else
@@ -306,11 +349,12 @@ namespace ConsoleApp1
 
         private void ProcessUseItem(string itemName)
         {
-            if (Player.Inventory.Contains(itemName))
+            var item = Player.Inventory.FirstOrDefault(i => i.Name == itemName);
+            if (item != null)
             {
-                Player.Inventory.Remove(itemName);
+                Player.Inventory.Remove(item);
 
-                if (itemName == "HealthPotion")
+                if (item.Name == "HealthPotion")
                 {
                     Player.Health = Math.Min(20, Player.Health + 10);
                     Console.WriteLine("\nYou used a Health Potion and recovered 10 health. Player Health: " + Player.Health);
@@ -322,5 +366,127 @@ namespace ConsoleApp1
                 Console.WriteLine("\nYou do not have that item in your inventory.");
             }
         }
+
+        private void ProcessEquipItem(string itemName)
+        {
+            var item = Player.Inventory.FirstOrDefault(i => i.Name == itemName);
+            if (item != null && item is Equipment equipment)
+            {
+                switch (equipment.Type)
+                {
+                    case EquipmentType.Weapon:
+                        Player.Weapon = equipment;
+                        break;
+                    case EquipmentType.Armor:
+                        Player.Armor = equipment;
+                        break;
+                    case EquipmentType.Ring:
+                        Player.Ring = equipment;
+                        break;
+                    case EquipmentType.Amulet:
+                        Player.Amulet = equipment;
+                        break;
+                    case EquipmentType.Useable:
+                        Player.Useable = equipment;
+                        break;
+                }
+                equipment.IsEquipped = true;
+                Console.WriteLine($"You equipped {equipment.Name}.");
+            }
+            else
+            {
+                Console.WriteLine($"You don't have {itemName} in your inventory or it's not a piece of equipment.");
+            }
+        }
+
+        private void ProcessUnequipItem(string itemName)
+        {
+            var item = Player.Inventory.FirstOrDefault(i => i.Name == itemName);
+            if (item != null && item.IsEquipped)
+            {
+                Player.Inventory.Remove( item );
+                item.IsEquipped= false;
+                Player.Inventory.Add( item );
+            }
+
+/*            var itemToUnequip = new Equipment { Name = itemName };
+
+            if (Player.Weapon?.Name == itemName)
+            {
+                itemToUnequip = Player.Weapon;
+                Player.Weapon = null;
+            }
+            else if (Player.Armor?.Name == itemName)
+            {
+                itemToUnequip = Player.Armor;
+                Player.Armor = null;
+            }
+            else if (Player.Ring?.Name == itemName)
+            {
+                itemToUnequip = Player.Ring;
+                Player.Ring = null;
+            }
+            else if (Player.Amulet?.Name == itemName)
+            {
+                itemToUnequip = Player.Amulet;
+                Player.Amulet = null;
+            }
+
+            if (itemToUnequip != null)
+            {
+                Player.Inventory.Add(itemToUnequip.Name);
+                Console.WriteLine($"You unequipped {itemName}.");
+            }
+            else
+            {
+                Console.WriteLine($"You're not currently equipped with {itemName}.");
+            }*/
+        }
+
+        private void ProcessInventory()
+        {
+            if (Player.Inventory.Count == 0)
+            {
+                Console.WriteLine("Your inventory is empty.");
+            }
+            else
+            {
+                Console.WriteLine("\n\tYour inventory contains: ");
+                foreach (var item in Player.Inventory)
+                {
+                    Console.WriteLine($"\t- {item.Name} ({item.Type})");
+                    Console.WriteLine($"\t- Description: {item.Description}");
+                    Console.WriteLine($"\t- Value: {item.Value} gold\n");
+/*                    if (item is Equipment equipment)
+                    {
+                        Console.WriteLine($"  Legendary Skill: {equipment.LegendarySkill ?? "None"}");
+                    }*/
+                }
+                Console.WriteLine();
+            }
+        }
+
+        private void ProcessAddEquipment(Equipment equipment)
+        {
+            Player.Inventory.Add(equipment);
+            Console.WriteLine($"You received {equipment.Name}. It has been added to your inventory.");
+        }
+
+        public void PrintStore()
+        {
+            var item = NPCs.FirstOrDefault(i => i.Type == NPCType.Merchant);
+            Console.WriteLine("\n\t**** View Merchandise **** ");
+            var count = 1;
+            foreach (var i in item.Items)
+            {
+                Console.WriteLine("\t[" + count + "] " + i.Name + " $" + i.Value);
+                count++;
+            }
+            
+            Console.WriteLine();
+        }
+
     }
 }
+   
+

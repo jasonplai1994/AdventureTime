@@ -4,9 +4,9 @@ using System.Collections.Generic;
 enum PeriodOfDay { Morning, Afternoon, Evening, Midnight }
 
 namespace ConsoleApp1 { 
-class Program
+public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
         
         
@@ -19,7 +19,6 @@ class Program
             Console.WriteLine(game.TimePeriod);
 
             Console.WriteLine();
-
             // Play the game
             bool running = true;
             while (running)
@@ -34,6 +33,9 @@ class Program
                 Console.WriteLine("4: Buy item");
                 Console.WriteLine("5: Use item");
                 Console.WriteLine("6: Attack");
+                Console.WriteLine("7: Open Inventory");
+                Console.WriteLine("8: Equip Item");
+                Console.WriteLine("9: Unequip Item");
                 Console.WriteLine("99: Exit game");
 
                 Console.Write("\nResponse: ");
@@ -64,11 +66,30 @@ class Program
                         break;
 
                     case "4":
-                        Console.Write("Enter the merchant's name: ");
-                        npcName = Console.ReadLine();
-                        Console.Write("Enter the item's name: ");
+                        game.PrintStore();
+                        Console.Write("Select Item ");
                         var itemName = Console.ReadLine();
-                        game.ProcessCommand($"buy {itemName} from {npcName}");
+                        switch (itemName)
+                        {
+                            case "1":
+                                game.ProcessCommand($"buy HealthPotion from Merchant");
+                                break;
+                            case "2":
+                                game.ProcessCommand($"buy Sword from Merchant");
+                                break;
+                            case "3":
+                                game.ProcessCommand($"buy Armor from Merchant");
+                                break;
+                            case "4":
+                                game.ProcessCommand($"buy Ring from Merchant");
+                                break;
+                            case "5":
+                                game.ProcessCommand($"buy Amulet from Merchant");
+                                break;
+                            case "6":
+                                game.ProcessCommand($"buy Shield from Merchant");
+                                break;
+                        }                  
                         break;
 
                     case "5":
@@ -78,9 +99,23 @@ class Program
                         break;
 
                     case "6":
-                       
-                        
                         game.ProcessCommand($"attack Enemy");
+                        break;
+
+                    case "7":
+                        game.ProcessCommand("Inventory");
+                        break;
+
+                    case "8":
+                        Console.WriteLine("Select an item to Equip: ");
+                        itemName = Console.ReadLine();
+                        game.ProcessCommand("Equip");
+                        break;
+
+                    case "9":
+                        Console.WriteLine("Select an item to Unequip");
+                        itemName = Console.ReadLine();
+                        game.ProcessCommand("Unequip");
                         break;
 
                     case "99":
@@ -93,14 +128,10 @@ class Program
             }
             game.PrintGameStatus();
         }
-    
 
-        
         public void changeTimePeriod()
         {
-            Random rng = new Random();
-            
-           
+            Random rng = new Random();   
         }
     }
 }
