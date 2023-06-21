@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
-    enum NPCType { Merchant, QuestGiver, Enemy }
+    public enum NPCType { Merchant, QuestGiver, Enemy }
 
-    class NPC
+    public class NPC
     {
         public string Name { get; set; }
         public NPCType Type { get; set; }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
-    class Game
+    public class Game
     {
         public List<NPC> NPCs { get; set; } = new List<NPC>();
         public Player Player { get; set; } = new Player();
