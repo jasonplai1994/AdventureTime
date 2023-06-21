@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-enum PeriodOfDay { Morning, Afternoon, Evening, Midnight }
+public enum PeriodOfDay { Morning, Afternoon, Evening, Midnight }
 
 namespace ConsoleApp1 { 
 public class Program

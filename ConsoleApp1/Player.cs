@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
-    class Player
+    public class Player
     {
         public int Health { get; set; } = 20;
         public int XP { get; set; } = 0;
