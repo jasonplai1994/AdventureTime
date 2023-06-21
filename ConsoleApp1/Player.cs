@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +21,8 @@ namespace ConsoleApp1
         public string Quest { get; set; } = "None";
         public Dictionary<string, int> Abilities { get; set; } = new Dictionary<string, int>();
 
+        private Random random = new Random();
+
         // Generate Abilities
         public void GenerateAbilities(Random rng)
         {
@@ -37,7 +40,7 @@ namespace ConsoleApp1
 
         public void Print()
         {
-            foreach (KeyValuePair<string, int> kvp in Abilities)
+            foreach (KeyValuePair<string, int> kvp in Abilities) 
                 Console.WriteLine("Character Stats: {0}, Value: {1}", kvp.Key, kvp.Value);
 
             Console.WriteLine();
@@ -52,6 +55,34 @@ namespace ConsoleApp1
                 Level++;
                 XP -= 100;
                 Console.WriteLine("\n\t** You leveled Up! **");
+
+                Abilities.TryGetValue("Persuasion", out int Persuasion);
+                Persuasion += random.Next(1, 6);
+                Abilities.Remove("Persuasion");
+                Abilities.Add("Persuasion", Persuasion);
+
+                Abilities.TryGetValue("Stength", out int Strength);
+                Strength += random.Next(1, 6);
+                Abilities.Remove("Strength");
+                Abilities.Add("Strength", Strength);
+
+                Abilities.TryGetValue("Intelligence", out int Intelligence);
+                Intelligence += random.Next(1, 6);
+                Abilities.Remove("Intelligence");
+                Abilities.Add("Intelligence", Intelligence);
+
+                Abilities.TryGetValue("Dexterity", out int Dexterity);
+                Dexterity += random.Next(1, 6);
+                Abilities.Remove("Dexterity");
+                Abilities.Add("Dexterity", Dexterity);
+
+                Abilities.TryGetValue("Luck", out int Luck);
+                Luck += random.Next(1, 6);
+                Abilities.Remove("Luck");
+                Abilities.Add("Luck", Luck);
+
+                Print();
+
             }
         }
 
