@@ -10,6 +10,7 @@ namespace ConsoleApp1
 {
     public class Player
     {
+        public int Id;
         public int Health { get; set; } = 20;
         public int XP { get; set; } = 0;
         public int AC { get; set; } = 10; // Default AC value in DnD

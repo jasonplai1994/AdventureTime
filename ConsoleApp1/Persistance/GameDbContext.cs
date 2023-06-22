@@ -22,7 +22,7 @@ public class GameDbContext : DbContext
         /*var serverVersion = new MySqlServerVersion(new Version(8, 0, 29));
         base.OnConfiguring(optionsBuilder);*/
 
-        string connectionString = "Server=localhost;Database=adventuretime;user=root;password=password;";
+        string connectionString = "Server=localhost;Database=adventuretime;user=root;password=Monkey2000!;";
         optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
     }
 }
@@ -32,4 +32,5 @@ public class Post
     public int PostId { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }
+    public List<NPC> NPCs { get; set; }
 }
