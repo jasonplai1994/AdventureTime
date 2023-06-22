@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -10,6 +11,7 @@ namespace ConsoleApp1
 {
     public class Player
     {
+        public int Id { get; set; }
         public int Health { get; set; } = 20;
         public int XP { get; set; } = 0;
         public int AC { get; set; } = 10; // Default AC value in DnD
@@ -19,6 +21,7 @@ namespace ConsoleApp1
         public int Gold { get; set; } = 50;
         public List<Equipment> Inventory { get; set; } = new List<Equipment>();
         public string Quest { get; set; } = "None";
+        [NotMapped]
         public Dictionary<string, int> Abilities { get; set; } = new Dictionary<string, int>();
 
         private Random random = new Random();

@@ -22,5 +22,31 @@ namespace ConsoleApp1.Services
 
             return Result.Created;
         }
+
+        public ErrorOr<Created> AddNPC(List<NPC> NPCs)
+        {
+            int i = 0;
+
+            while (i < NPCs.Count)
+            {
+                _dbContext.Add(NPCs[i]);
+                i++;
+            }
+            _dbContext.SaveChanges ();
+            return Result.Created;
+        }
+
+        public ErrorOr<Created> SaveQuests(List<Quest> quests)
+        {
+            int i = 0;
+
+            while (i < quests.Count)
+            {
+                _dbContext.Add(quests[i]);
+                i++;
+            }
+            _dbContext.SaveChanges();
+            return Result.Created;
+        }
     }
 }

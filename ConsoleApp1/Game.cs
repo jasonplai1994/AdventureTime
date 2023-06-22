@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -9,6 +10,7 @@ namespace ConsoleApp1
 {
     public class Game
     {
+        public int Id { get; set; }
         public List<NPC> NPCs { get; set; } = new List<NPC>();
         public Player Player { get; set; } = new Player();
         public int TurnNumber { get; set; } = 0;
@@ -28,6 +30,7 @@ namespace ConsoleApp1
             NPCs.Add(new NPC
             {
                 Name = "Merchant",
+
                 Type = NPCType.Merchant,
                 Items = new List<Equipment> { 
                     new Equipment { Name = "HealthPotion", Value = 10 },
