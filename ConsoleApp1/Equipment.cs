@@ -11,9 +11,9 @@ namespace ConsoleApp1
         Weapon,
         Armor,
         Ring,
-        Amulet,
-        Useable
+        Amulet
     }
+
     public class Equipment
     {
         public int Id { get; set; }
@@ -23,6 +23,7 @@ namespace ConsoleApp1
         public string? LegendarySkill { get; set; } // Special functionality tied to this equipment
         public string? Description { get; set; }
         public bool IsEquipped { get; set; } = false;
+        public bool IsUseable { get; set; } = true;
         
     }
 }

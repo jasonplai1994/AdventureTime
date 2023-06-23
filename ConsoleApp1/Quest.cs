@@ -13,5 +13,7 @@ namespace ConsoleApp1
         public string Description { get; set; }
         public bool IsCompleted { get; set; } = false;
         public int RewardXP { get; set; }
+
+
     }
 }

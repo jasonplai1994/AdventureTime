@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Collections.Specialized.BitVector32;
 
 namespace ConsoleApp1
 {
     public class Game
     {
+        public int Id { get; set; }
         public List<NPC> NPCs { get; set; } = new List<NPC>();
         public Player Player { get; set; } = new Player();
         public int TurnNumber { get; set; } = 0;
@@ -20,10 +23,7 @@ namespace ConsoleApp1
         public void InitializeGame()
         {
             Random rng = new Random();
-            // Player player = new Player();
             Player.GenerateAbilities(rng);
-
-
 
             NPCs.Add(new NPC
             {
@@ -80,16 +80,32 @@ namespace ConsoleApp1
         {
             // Implement your own game logic
             var parts = command.Split(' ');
+
             if (parts.Length == 1)
             {
                 var action = parts[0];
+
                 if (action == "Inventory")
-                {
                     ProcessInventory();
-                    return;
-                }
+
+                return;
             }
-            if (parts.Length == 2)
+            else if(parts.Length == 2 && parts[1] == "Enemy")
+            {
+                var target = NPCs.FirstOrDefault(npc => npc.Name == parts[1]);
+                var action = parts[0];
+
+                if (target == null)
+                {
+                    Console.WriteLine("Invalid target");
+                }
+                if (action == "attack" && target.Type == NPCType.Enemy)
+                {
+                    ProcessAttack(target);
+                }
+                return;
+            }
+            else if (parts.Length == 2)
             {
                 var action = parts[0];
                 var targetName = parts[1];
@@ -97,22 +113,17 @@ namespace ConsoleApp1
                 if (action == "use" && Player.Health < 20)
                 {
                     ProcessUseItem(targetName);
-                    return;
-                }
-                var target = NPCs.FirstOrDefault(npc => npc.Name == targetName);
-
-                if (target == null)
-                {
-                    Console.WriteLine("Invalid target");
-                    //return;
-                }
-                if (action == "attack" && target.Type == NPCType.Enemy)
-                {
-                    ProcessAttack(target);
                 }
                 else if (action == "talk")
                 {
-                    Console.WriteLine("Hello " + target.Name);
+                    Console.WriteLine("Hello " + targetName);
+                }
+                else if (action == "Equip") {
+                    ProcessEquipItem(targetName);
+                }
+                else if (action == "Unequip")
+                {
+                    ProcessUnequipItem(targetName);
                 }
                 else
                 {
@@ -120,37 +131,6 @@ namespace ConsoleApp1
                 }
                 return;
             }                       
-                // Existing command processing code...
-                // Equipment
-                if (true)
-            {            
-                var action = parts[0];
-                var targetItem = parts.Length > 1 ? parts[1] : string.Empty;
-
-                switch (action)
-                {
-                    case "Equip":
-                        ProcessEquipItem(targetItem);
-                        break;
-                    case "Unequip":
-                        ProcessUnequipItem(targetItem);
-                        break;
-                    case "Use":
-                        ProcessUseItem(targetItem);
-                        break;
-                        // Other command processing...
-                }
-            }
-                
-
-            // Example of command: "buy Health Potion from Merchant"
-            //var parts = command.Split(' ');
-
-            if (parts.Length != 4)
-            {
-                Console.WriteLine("Invalid command");
-                return;
-            }
             else if (parts.Length == 4)
             {
                 var action = parts[0];
@@ -162,15 +142,16 @@ namespace ConsoleApp1
                 if (target == null)
                 {
                     Console.WriteLine("Invalid target");
-                    return;
                 }
-                if (action == "buy" && target.Type == NPCType.Merchant)
+                else if (action == "buy" && target.Type == NPCType.Merchant)
                 {
                     ProcessBuy(target, targetItemOrQuest);
+                    
                 }
                 else if (action == "accept" && target.Type == NPCType.QuestGiver)
                 {
                     ProcessAcceptQuest(target, targetItemOrQuest);
+                    Console.WriteLine($"You accepted Quest {targetItemOrQuest} from QuestGiver");
                 }
                 else if (action == "complete")
                 {
@@ -187,11 +168,8 @@ namespace ConsoleApp1
                 {
                     Console.WriteLine("Invalid action");
                 }
-
-
+                return;
             }
-
-
         }
 
         // Update Time and Weather
@@ -233,10 +211,10 @@ namespace ConsoleApp1
             Console.WriteLine($"Inventory: {string.Join(", ", Player.Inventory)}");
             Console.WriteLine($"Quest: {Player.Quest}");
             Console.WriteLine($"Abilities: {string.Join(", ", Player.Abilities)}");
-            Console.WriteLine($"Weapon: {Player.Weapon?.Name ?? "None"}");
+            /*Console.WriteLine($"Weapon: {Player.Weapon?.Name ?? "None"}");
             Console.WriteLine($"Armor: {Player.Armor?.Name ?? "None"}");
             Console.WriteLine($"Ring: {Player.Ring?.Name ?? "None"}");
-            Console.WriteLine($"Amulet: {Player.Amulet?.Name ?? "None"}");
+            Console.WriteLine($"Amulet: {Player.Amulet?.Name ?? "None"}");*/
         }
 
         private void ProcessAttack(NPC target)
@@ -250,7 +228,6 @@ namespace ConsoleApp1
                 target.Health -= damage;
                 Console.WriteLine($"You dealt {damage} damage to {target.Name}. Remaining Enemy Health: " + target.Health);
 
-
                 if (target.Health <= 0)
                 {
                     Console.WriteLine($"You defeated {target.Name}.");
@@ -262,7 +239,6 @@ namespace ConsoleApp1
                     Console.WriteLine();
 
                     target.Health = 20; // monster respawn
-
                 }
                 else
                 {
@@ -274,7 +250,6 @@ namespace ConsoleApp1
                         var enemyDamage = rng.Next(1, 11) + target.AttackValue;
                         Player.Health -= enemyDamage;
                         Console.WriteLine($"{target.Name} dealt {enemyDamage} damage to you. Remaining Player Health: " + Player.Health);
-
                     }
                     else
                     {
@@ -304,7 +279,24 @@ namespace ConsoleApp1
                 Equipment equipment = new Equipment();
                 equipment.Name = itemName;  
                 equipment.Value = item.Value;
-                equipment.Type = EquipmentType.Useable;
+
+                switch (itemName)
+                {
+                    case "Weapon":
+                        equipment.Type = EquipmentType.Weapon;
+                        break;
+                    case "Armor":
+                        equipment.Type = EquipmentType.Armor;
+                        break;
+                    case "Ring":
+                        equipment.Type = EquipmentType.Ring;
+                        break;
+                    case "Amulet":
+                        equipment.Type = EquipmentType.Amulet;
+                        break;
+                }
+
+                equipment.Type = EquipmentType.Armor;
                 Player.Inventory.Add(equipment);
                 Console.WriteLine($"\nYou bought {equipment.Name}. Gold Remaining: " + Player.Gold);
                 Console.WriteLine();
@@ -320,16 +312,7 @@ namespace ConsoleApp1
         private void ProcessAcceptQuest(NPC target, string questTitle)
         {
             var quest = target.Quests.FirstOrDefault(q => q.Title == questTitle);
-
-            if (quest == null)
-            {
-                Console.WriteLine("Quest not found");
-                return;
-            }
-
             Player.Quest = quest.Title;
-            Console.WriteLine($"\nYou accepted the quest: {quest.Title}.");
-
         }
 
         private void ProcessCompleteQuest(string questname)
@@ -341,10 +324,7 @@ namespace ConsoleApp1
 
             Player.ExpCheck();
 
-            Console.WriteLine("\n\tExperience: " + Player.XP + " Level: " + Player.Level);
-
-            Console.WriteLine();
-
+            Console.WriteLine("\n\tExperience: " + Player.XP + " Level: " + Player.Level + "\n");
         }
 
         private void ProcessUseItem(string itemName)
@@ -372,30 +352,12 @@ namespace ConsoleApp1
             var item = Player.Inventory.FirstOrDefault(i => i.Name == itemName);
             if (item != null && item is Equipment equipment)
             {
-                switch (equipment.Type)
-                {
-                    case EquipmentType.Weapon:
-                        Player.Weapon = equipment;
-                        break;
-                    case EquipmentType.Armor:
-                        Player.Armor = equipment;
-                        break;
-                    case EquipmentType.Ring:
-                        Player.Ring = equipment;
-                        break;
-                    case EquipmentType.Amulet:
-                        Player.Amulet = equipment;
-                        break;
-                    case EquipmentType.Useable:
-                        Player.Useable = equipment;
-                        break;
-                }
                 equipment.IsEquipped = true;
-                Console.WriteLine($"You equipped {equipment.Name}.");
+                Console.WriteLine($"\n\t** You equipped {equipment.Name}. **\n");
             }
             else
             {
-                Console.WriteLine($"You don't have {itemName} in your inventory or it's not a piece of equipment.");
+                Console.WriteLine($"\n\t** You don't have {itemName} in your inventory or it's not a piece of equipment. **\n");
             }
         }
 
@@ -408,39 +370,7 @@ namespace ConsoleApp1
                 item.IsEquipped = false;
                 Player.Inventory.Add( item );
             }
-
-/*            var itemToUnequip = new Equipment { Name = itemName };
-
-            if (Player.Weapon?.Name == itemName)
-            {
-                itemToUnequip = Player.Weapon;
-                Player.Weapon = null;
-            }
-            else if (Player.Armor?.Name == itemName)
-            {
-                itemToUnequip = Player.Armor;
-                Player.Armor = null;
-            }
-            else if (Player.Ring?.Name == itemName)
-            {
-                itemToUnequip = Player.Ring;
-                Player.Ring = null;
-            }
-            else if (Player.Amulet?.Name == itemName)
-            {
-                itemToUnequip = Player.Amulet;
-                Player.Amulet = null;
-            }
-
-            if (itemToUnequip != null)
-            {
-                Player.Inventory.Add(itemToUnequip.Name);
-                Console.WriteLine($"You unequipped {itemName}.");
-            }
-            else
-            {
-                Console.WriteLine($"You're not currently equipped with {itemName}.");
-            }*/
+            Console.WriteLine("\n\t***  You are squishy!  ****\n");
         }
 
         private void ProcessInventory()
@@ -452,16 +382,10 @@ namespace ConsoleApp1
             else
             {
                 Console.WriteLine("\n\tYour inventory contains: ");
+
                 foreach (var item in Player.Inventory)
-                {
-                    Console.WriteLine($"\t- {item.Name} ({item.Type})");
-                    Console.WriteLine($"\t- Description: {item.Description}");
-                    Console.WriteLine($"\t- Value: {item.Value} gold\n");
-/*                    if (item is Equipment equipment)
-                    {
-                        Console.WriteLine($"  Legendary Skill: {equipment.LegendarySkill ?? "None"}");
-                    }*/
-                }
+                    Console.WriteLine($"\t- {item.Name} ({item.Type})\n\t- Description: {item.Description}\n\t- Value: {item.Value} gold\n");
+
                 Console.WriteLine();
             }
         }
