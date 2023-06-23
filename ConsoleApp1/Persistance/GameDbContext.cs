@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ConsoleApp1.Models;
 using Pomelo.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
@@ -17,6 +18,7 @@ public class GameDbContext : DbContext
     public DbSet<Player> Players { get; set; } = null!;
     public DbSet<NPC> NPCs { get; set; } = null!;
     public DbSet<Equipment> Equipments { get; set; } = null!;
+    public DbSet<Armor> Armors { get; set; } = null!;
 
     /*public GameDbContext(DbContextOptions<GameDbContext> options) : base(options) { 
         
