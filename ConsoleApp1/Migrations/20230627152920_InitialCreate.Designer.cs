@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConsoleApp1.Migrations
 {
     [DbContext(typeof(GameDbContext))]
-    [Migration("20230626235200_InitialCreate")]
+    [Migration("20230627152920_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -21,6 +21,28 @@ namespace ConsoleApp1.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("ConsoleApp1.Models.Ability", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Stat")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("Abilities");
+                });
 
             modelBuilder.Entity("ConsoleApp1.Models.Armor", b =>
                 {
@@ -83,6 +105,9 @@ namespace ConsoleApp1.Migrations
                     b.Property<bool>("IsEquipped")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<bool>("IsInInventory")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("LegendarySkill")
                         .HasColumnType("longtext");
 
@@ -115,7 +140,7 @@ namespace ConsoleApp1.Migrations
                     b.Property<int>("CurrentDayNumber")
                         .HasColumnType("int");
 
-                    b.Property<int>("PlayerId")
+                    b.Property<int?>("PlayerId")
                         .HasColumnType("int");
 
                     b.Property<int>("TimePeriod")
@@ -236,6 +261,13 @@ namespace ConsoleApp1.Migrations
                     b.ToTable("Quests");
                 });
 
+            modelBuilder.Entity("ConsoleApp1.Models.Ability", b =>
+                {
+                    b.HasOne("ConsoleApp1.Models.Player", null)
+                        .WithMany("ListOfAbilities")
+                        .HasForeignKey("PlayerId");
+                });
+
             modelBuilder.Entity("ConsoleApp1.Models.Equipment", b =>
                 {
                     b.HasOne("ConsoleApp1.Models.NPC", null)
@@ -247,9 +279,7 @@ namespace ConsoleApp1.Migrations
                 {
                     b.HasOne("ConsoleApp1.Models.Player", "Player")
                         .WithMany()
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PlayerId");
 
                     b.Navigation("Player");
                 });
@@ -287,6 +317,11 @@ namespace ConsoleApp1.Migrations
                     b.Navigation("Items");
 
                     b.Navigation("Quests");
+                });
+
+            modelBuilder.Entity("ConsoleApp1.Models.Player", b =>
+                {
+                    b.Navigation("ListOfAbilities");
                 });
 #pragma warning restore 612, 618
         }

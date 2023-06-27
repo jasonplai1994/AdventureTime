@@ -43,6 +43,22 @@ namespace ConsoleApp1.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Abilities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Stat = table.Column<int>(type: "int", nullable: false),
+                    PlayerId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Abilities", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "EquipmentStore",
                 columns: table => new
                 {
@@ -58,6 +74,7 @@ namespace ConsoleApp1.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IsEquipped = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     IsConsumable = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsInInventory = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     NPCId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -72,7 +89,7 @@ namespace ConsoleApp1.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    PlayerId = table.Column<int>(type: "int", nullable: false),
+                    PlayerId = table.Column<int>(type: "int", nullable: true),
                     TurnNumber = table.Column<int>(type: "int", nullable: false),
                     TimePeriod = table.Column<int>(type: "int", nullable: false),
                     CurrentDayNumber = table.Column<int>(type: "int", nullable: false),
@@ -164,6 +181,11 @@ namespace ConsoleApp1.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Abilities_PlayerId",
+                table: "Abilities",
+                column: "PlayerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EquipmentStore_NPCId",
                 table: "EquipmentStore",
                 column: "NPCId");
@@ -189,6 +211,13 @@ namespace ConsoleApp1.Migrations
                 column: "NPCId");
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Abilities_Players_PlayerId",
+                table: "Abilities",
+                column: "PlayerId",
+                principalTable: "Players",
+                principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_EquipmentStore_NPCs_NPCId",
                 table: "EquipmentStore",
                 column: "NPCId",
@@ -200,16 +229,18 @@ namespace ConsoleApp1.Migrations
                 table: "Games",
                 column: "PlayerId",
                 principalTable: "Players",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Quests_NPCs_NPCId",
-                table: "Quests");
+                name: "FK_Games_Players_PlayerId",
+                table: "Games");
+
+            migrationBuilder.DropTable(
+                name: "Abilities");
 
             migrationBuilder.DropTable(
                 name: "Armors");
@@ -218,16 +249,16 @@ namespace ConsoleApp1.Migrations
                 name: "EquipmentStore");
 
             migrationBuilder.DropTable(
-                name: "NPCs");
-
-            migrationBuilder.DropTable(
-                name: "Games");
-
-            migrationBuilder.DropTable(
                 name: "Players");
 
             migrationBuilder.DropTable(
                 name: "Quests");
+
+            migrationBuilder.DropTable(
+                name: "NPCs");
+
+            migrationBuilder.DropTable(
+                name: "Games");
         }
     }
 }

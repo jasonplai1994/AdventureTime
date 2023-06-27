@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -11,9 +12,11 @@ namespace ConsoleApp1.Models
 {
     public class Game
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public List<NPC> NPCs { get; set; } = new List<NPC>();
-        public Player Player { get; set; }
+        public Player? Player { get; set; }
         public int TurnNumber { get; set; } = 0;
         public PeriodOfDay TimePeriod { get; set; } = PeriodOfDay.Morning;
         public int CurrentDayNumber { get; set; } = 0;
@@ -23,7 +26,10 @@ namespace ConsoleApp1.Models
         public void InitializeGame(Player saved)
         {
             if(saved != null)
+            {
                 Player = saved;
+                Console.WriteLine("HERE" + saved.ToString());
+            }
             else
             {
                 Player = new Player();

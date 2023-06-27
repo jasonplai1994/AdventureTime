@@ -7,6 +7,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace ConsoleApp1.Services
 {
@@ -34,7 +35,7 @@ namespace ConsoleApp1.Services
                 _dbContext.Add(NPCs[i]);
                 i++;
             }
-            _dbContext.SaveChanges ();
+            _dbContext.SaveChanges();
             return Result.Created;
         }
 
@@ -52,10 +53,39 @@ namespace ConsoleApp1.Services
         }
         public ErrorOr<Created> SavePlayer(Player player)
         {
-            player.Id++;
-            _dbContext.Add(player);
+            var result = _dbContext.Players.OrderByDescending(p => p.Id).FirstOrDefault();
+
+            if (result == null)
+            {
+                _dbContext.Add(player);
+                _dbContext.SaveChanges();
+            }
+            else
+            {
+                //player.Id = result.Id + 1;
+                _dbContext.Add(player);
+                _dbContext.Update(player);
+            }
 
             
+            return Result.Created;
+        }
+
+        public ErrorOr<Created> SaveToInventory(Equipment inn)
+        {
+            Equipment e = new Equipment
+            {
+                Name = inn.Name,
+                Type = inn.Type,
+                Value = inn.Value,
+                Description = inn.Description,
+                IsConsumable = inn.IsConsumable,
+                IsEquipped = inn.IsEquipped,
+                IsInInventory = true,
+                LegendarySkill = inn.LegendarySkill
+            };
+
+            _dbContext.EquipmentInventory.Add(e);
             _dbContext.SaveChanges();
             return Result.Created;
         }
@@ -74,6 +104,16 @@ namespace ConsoleApp1.Services
             }
             else
                 return result;
+        }
+
+        public Player GetPlayer(String name)
+        {
+            return _dbContext.Players.OrderByDescending(p => p.Id).FirstOrDefault(p => p.Description == name);
+        }
+
+        public List<Player> GetPlayerList()
+        {
+            return _dbContext.Players.ToList();
         }
 
         public List<Quest> GetQuests()
@@ -96,27 +136,14 @@ namespace ConsoleApp1.Services
             return(_dbContext.EquipmentStore.ToList());
         }
 
-        public ErrorOr<Created> SaveToInventory(Equipment inn)
-        {
-            Equipment e = new Equipment{
-                Name = inn.Name,
-                Type = inn.Type,
-                Value = inn.Value,
-                Description = inn.Description,
-                IsConsumable = inn.IsConsumable,
-                IsEquipped = inn.IsEquipped,
-                IsInInventory = true,
-                LegendarySkill = inn.LegendarySkill
-            };
-
-            _dbContext.EquipmentInventory.Add(e);
-            _dbContext.SaveChanges();
-            return Result.Created;
-        }
-
         public List<Equipment> GetInventory()
         {
             return _dbContext.EquipmentInventory.Where(e => e.IsInInventory).ToList();
+        }
+
+        public List<Ability> GetAbilities()
+        {
+            return _dbContext.Abilities.OrderByDescending(p => p.Id).ToList();
         }
 
         public ErrorOr<Deleted> DropTable(String tableName)

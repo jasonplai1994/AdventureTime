@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System;
 
 namespace ConsoleApp1;
 
@@ -27,7 +28,10 @@ public class GameDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        string connectionString = "Server=localhost;Database=adventuretime;user=root;password=password;";
+        //string connectionString = "Server=localhost;Database=adventuretime;user=root;password=password;";
+
+
+        string connectionString = Environment.GetEnvironmentVariable("localhost");
         optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
     }
 

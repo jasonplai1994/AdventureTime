@@ -137,7 +137,7 @@ namespace ConsoleApp1.Migrations
                     b.Property<int>("CurrentDayNumber")
                         .HasColumnType("int");
 
-                    b.Property<int>("PlayerId")
+                    b.Property<int?>("PlayerId")
                         .HasColumnType("int");
 
                     b.Property<int>("TimePeriod")
@@ -276,9 +276,7 @@ namespace ConsoleApp1.Migrations
                 {
                     b.HasOne("ConsoleApp1.Models.Player", "Player")
                         .WithMany()
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PlayerId");
 
                     b.Navigation("Player");
                 });
