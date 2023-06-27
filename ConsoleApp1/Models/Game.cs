@@ -28,7 +28,6 @@ namespace ConsoleApp1.Models
             if(saved != null)
             {
                 Player = saved;
-                Console.WriteLine("HERE" + saved.ToString());
             }
             else
             {
@@ -54,7 +53,7 @@ namespace ConsoleApp1.Models
             {
                 Name = "QuestGiver",
                 Type = NPCType.QuestGiver,
-                Quests = new List<Quest> { new Quest { Title = "1", Description = "Do something", RewardXP = 20 }, new Quest { Title = "2", Description = "Do something", RewardXP = 20 }, new Quest { Title = "3", Description = "Do something", RewardXP = 20 } }
+                //Quests = new List<Quest> { new Quest { Title = "1", Description = "Do something", RewardXP = 20 }, new Quest { Title = "2", Description = "Do something", RewardXP = 20 }, new Quest { Title = "3", Description = "Do something", RewardXP = 20 } }
             });
             NPCs.Add(new NPC
             {
@@ -216,7 +215,6 @@ namespace ConsoleApp1.Models
             Console.WriteLine($"Gold: {Player.Gold}");
             Console.WriteLine($"Inventory: {string.Join(", ", Player.Inventory)}");
             Console.WriteLine($"Quest: {Player.Quest}");
-            Console.WriteLine($"Abilities: {string.Join(", ", Player.Abilities)}");
             /*Console.WriteLine($"Weapon: {Player.Weapon?.Name ?? "None"}");
             Console.WriteLine($"Armor: {Player.Armor?.Name ?? "None"}");
             Console.WriteLine($"Ring: {Player.Ring?.Name ?? "None"}");
@@ -334,20 +332,21 @@ namespace ConsoleApp1.Models
         // Process Accept Quest
         private void ProcessAcceptQuest(NPC target, string questTitle)
         {
-            var quest = target.Quests.FirstOrDefault(q => q.Title == questTitle);
+            //var quest = target.Quests.FirstOrDefault(q => q.Title == questTitle);
             //Player.Quest = quest.Title;
         }
 
         private void ProcessCompleteQuest(string questname)
         {
-            Quest q = Player.Quest;
+            /*bool q = Player.Quest.Contains();
+            
             Player.Quest = null;
             Console.WriteLine("\n\t\t\t** Completed Quest Title: " + questname + " **");
 
             Player.XP += q.RewardXP;
 
             if (!Player.ExpCheck())
-                Console.WriteLine("\n\t\tExperience: " + Player.XP + " Level: " + Player.Level + "\n");
+                Console.WriteLine("\n\t\tExperience: " + Player.XP + " Level: " + Player.Level + "\n");*/
         }
 
         private void ProcessUseItem(string itemName)

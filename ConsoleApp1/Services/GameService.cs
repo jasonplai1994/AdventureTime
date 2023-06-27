@@ -53,21 +53,20 @@ namespace ConsoleApp1.Services
         }
         public ErrorOr<Created> SavePlayer(Player player)
         {
-            var result = _dbContext.Players.OrderByDescending(p => p.Id).FirstOrDefault();
+            var result = _dbContext.Players.OrderByDescending(p => p.Id).FirstOrDefault(p => p.Description == player.Description);
 
             if (result == null)
             {
                 _dbContext.Add(player);
-                _dbContext.SaveChanges();
             }
             else
             {
                 //player.Id = result.Id + 1;
-                _dbContext.Add(player);
+                //_dbContext.Add(player);
                 _dbContext.Update(player);
             }
 
-            
+            _dbContext.SaveChanges();
             return Result.Created;
         }
 
@@ -116,14 +115,20 @@ namespace ConsoleApp1.Services
             return _dbContext.Players.ToList();
         }
 
+        public List<Quest> GetPlayerQuests()
+        {
+            Player p = _dbContext.Players.Include(p => p.Quest).FirstOrDefault();
+            return p.Quest;
+        }
+
         public List<Quest> GetQuests()
         {
-            List<Quest> quests = _dbContext.Quests.ToList();
+            List<Quest> quests = _dbContext.Quests.OrderByDescending(p => p.Id).ToList();
 
-            if (quests.Count == 0)
-                CreateQuests();
+            /*if (quests.Count == 0)
+                CreateQuests();*/
 
-            return(_dbContext.Quests.ToList());
+            return quests;
         }
 
         public List<Equipment> GetStore()

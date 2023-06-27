@@ -25,9 +25,7 @@ namespace ConsoleApp1.Models
         public int Gold { get; set; } = 50;
         [NotMapped]
         public List<Equipment> Inventory { get; set; } = new List<Equipment>();
-        public Quest? Quest { get; set; }
-        [NotMapped]
-        public Dictionary<string, int> Abilities { get; set; } = new Dictionary<string, int>();
+        public List<Quest> Quest { get; set; } = new List<Quest>();
         public List<Ability> ListOfAbilities { get; set; } = new List<Ability> { };
         [NotMapped]
         private Random random = new Random();
@@ -65,13 +63,50 @@ namespace ConsoleApp1.Models
             ListOfAbilities.Add(a3);
             ListOfAbilities.Add(a4);
             ListOfAbilities.Add(a5);
+
+            Quest q1 = new Quest
+            {
+                Title = "1",
+                Description = "Quest Number 1",
+                IsCompleted = false,
+                RewardXP = 50
+            };
+
+            Quest q2 = new Quest
+            {
+                Title = "2",
+                Description = "Quest Number 2",
+                IsCompleted = false,
+                RewardXP = 150
+            };
+
+            Quest q3 = new Quest
+            {
+                Title = "3",
+                Description = "Quest Number 3",
+                IsCompleted = false,
+                RewardXP = 250
+            };
+
+            Quest q4 = new Quest
+            {
+                Title = "4",
+                Description = "Quest Number 4",
+                IsCompleted = false,
+                RewardXP = 100
+            };
+
+            Quest.Add(q1);
+            Quest.Add(q2);
+            Quest.Add(q3);
+            Quest.Add(q4);
         }
 
         public void Print()
         {
             string splash2 = "\t\t\t*********************************************************\n" +
                     $"\t\t\t*                       Welcome                         *\n" +
-                    $"\t\t\t*                       {Description}                     \t*\n" +
+                    $"\t\t\t*                   Current Level: {Level}             \t*\n" +
                     "\t\t\t*  - Your player was been generated with these stats -  *\n" +
                     "\t\t\t*               - - Character Stats - -                 *\n" +
                     "\t\t\t*               -----------------------                 *\n" +
