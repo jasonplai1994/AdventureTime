@@ -3,6 +3,7 @@ using System;
 using ConsoleApp1;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,36 +11,16 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConsoleApp1.Migrations
 {
     [DbContext(typeof(GameDbContext))]
-    partial class GameDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230627000940_InventoryStore")]
+    partial class InventoryStore
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("ConsoleApp1.Models.Ability", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Stat")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PlayerId");
-
-                    b.ToTable("Abilities");
-                });
 
             modelBuilder.Entity("ConsoleApp1.Models.Armor", b =>
                 {
@@ -258,13 +239,6 @@ namespace ConsoleApp1.Migrations
                     b.ToTable("Quests");
                 });
 
-            modelBuilder.Entity("ConsoleApp1.Models.Ability", b =>
-                {
-                    b.HasOne("ConsoleApp1.Models.Player", null)
-                        .WithMany("ListOfAbilities")
-                        .HasForeignKey("PlayerId");
-                });
-
             modelBuilder.Entity("ConsoleApp1.Models.Equipment", b =>
                 {
                     b.HasOne("ConsoleApp1.Models.NPC", null)
@@ -316,11 +290,6 @@ namespace ConsoleApp1.Migrations
                     b.Navigation("Items");
 
                     b.Navigation("Quests");
-                });
-
-            modelBuilder.Entity("ConsoleApp1.Models.Player", b =>
-                {
-                    b.Navigation("ListOfAbilities");
                 });
 #pragma warning restore 612, 618
         }

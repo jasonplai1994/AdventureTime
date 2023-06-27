@@ -1,4 +1,5 @@
-﻿using ErrorOr;
+﻿using ConsoleApp1.Models;
+using ErrorOr;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -5,3 +5,6 @@ build/            # Ignore any directory named "build"
 **/temp/          # Ignore any directory named "temp" at any level of the directory structure
 
 .vs/              # Ignore Visual Studio files
+
+FileContentIndex/*
+Migrations/*

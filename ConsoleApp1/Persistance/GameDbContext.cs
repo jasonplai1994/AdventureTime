@@ -13,12 +13,13 @@ namespace ConsoleApp1;
 public class GameDbContext : DbContext 
 {
     public DbSet<Game> Games { get; set; } = null!;
-    public DbSet<Item> Items { get; set; } = null!;
     public DbSet<Quest> Quests { get; set; } = null!;
     public DbSet<Player> Players { get; set; } = null!;
     public DbSet<NPC> NPCs { get; set; } = null!;
-    public DbSet<Equipment> Equipments { get; set; } = null!;
+    public DbSet<Equipment> EquipmentInventory { get; set; } = null!;
+    public DbSet<Equipment> EquipmentStore { get; set; } = null!;
     public DbSet<Armor> Armors { get; set; } = null!;
+    public DbSet<Ability> Abilities { get; set; } = null!;
 
     /*public GameDbContext(DbContextOptions<GameDbContext> options) : base(options) { 
         
@@ -26,7 +27,18 @@ public class GameDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        string connectionString = "Server=localhost;Database=adventuretime;user=root;password=Monkey2000!;";
+        string connectionString = "Server=localhost;Database=adventuretime;user=root;password=password;";
         optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Equipment>()
+            .ToTable("EquipmentInventory") // Configure EquipmentInventory table
+            .HasKey(e => e.Id);
+
+        modelBuilder.Entity<Equipment>()
+            .ToTable("EquipmentStore") // Configure EquipmentStore table
+            .HasKey(e => e.Id);
     }
 }

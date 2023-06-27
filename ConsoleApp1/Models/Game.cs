@@ -7,31 +7,37 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Collections.Specialized.BitVector32;
 
-namespace ConsoleApp1
+namespace ConsoleApp1.Models
 {
     public class Game
     {
         public int Id { get; set; }
         public List<NPC> NPCs { get; set; } = new List<NPC>();
-        public Player Player { get; set; } = new Player();
+        public Player Player { get; set; }
         public int TurnNumber { get; set; } = 0;
         public PeriodOfDay TimePeriod { get; set; } = PeriodOfDay.Morning;
         public int CurrentDayNumber { get; set; } = 0;
         public string Weather { get; set; } = "Clear";
 
         // Initialize Abilities
-        public void InitializeGame()
+        public void InitializeGame(Player saved)
         {
-            Random rng = new Random();
-            Player.GenerateAbilities(rng);
+            if(saved != null)
+                Player = saved;
+            else
+            {
+                Player = new Player();
+                Random rng = new Random();
+                Player.GenerateAbilities(rng);
+            }   
 
             NPCs.Add(new NPC
             {
                 Name = "Merchant",
                 Type = NPCType.Merchant,
-                Items = new List<Equipment> { 
+                Items = new List<Equipment> {
                     new Equipment { Name = "HealthPotion", Value = 10 },
-                    new Equipment { Name = "Weapon", Value = 50 }, 
+                    new Equipment { Name = "Weapon", Value = 50 },
                     new Equipment { Name = "Armor", Value = 30 },
                     new Equipment { Name = "Ring", Value = 60 },
                     new Equipment { Name = "Amulet", Value = 90 },
@@ -90,7 +96,7 @@ namespace ConsoleApp1
 
                 return;
             }
-            else if(parts.Length == 2 && parts[1] == "Enemy")
+            else if (parts.Length == 2 && parts[1] == "Enemy")
             {
                 var target = NPCs.FirstOrDefault(npc => npc.Name == parts[1]);
                 var action = parts[0];
@@ -118,7 +124,8 @@ namespace ConsoleApp1
                 {
                     Console.WriteLine("Hello " + targetName);
                 }
-                else if (action == "Equip") {
+                else if (action == "Equip")
+                {
                     ProcessEquipItem(targetName);
                 }
                 else if (action == "Unequip")
@@ -130,7 +137,7 @@ namespace ConsoleApp1
                     Console.WriteLine("Invalid action");
                 }
                 return;
-            }                       
+            }
             else if (parts.Length == 4)
             {
                 var action = parts[0];
@@ -146,7 +153,7 @@ namespace ConsoleApp1
                 else if (action == "buy" && target.Type == NPCType.Merchant)
                 {
                     ProcessBuy(target, targetItemOrQuest);
-                    
+
                 }
                 else if (action == "accept" && target.Type == NPCType.QuestGiver)
                 {
@@ -155,14 +162,7 @@ namespace ConsoleApp1
                 }
                 else if (action == "complete")
                 {
-                    if (Player.Quest == "None")
-                    {
-                        Console.WriteLine("\nNo Quests Accepted\n");
-                    }
-                    else
-                    {
-                        ProcessCompleteQuest(targetItemOrQuest);
-                    }
+                    ProcessCompleteQuest(targetItemOrQuest);
                 }
                 else
                 {
@@ -192,7 +192,7 @@ namespace ConsoleApp1
                     break;
             }
             // Update the weather (you can implement more advanced weather system)
-            Weather = (TimePeriod == PeriodOfDay.Morning || TimePeriod == PeriodOfDay.Afternoon) ? "Sunny" : "Cloudy";
+            Weather = TimePeriod == PeriodOfDay.Morning || TimePeriod == PeriodOfDay.Afternoon ? "Sunny" : "Cloudy";
         }
 
         public void PrintGameStatus()
@@ -219,48 +219,66 @@ namespace ConsoleApp1
 
         private void ProcessAttack(NPC target)
         {
-            Random rng = new Random();
-            var attackRoll = rng.Next(1, 21) + Player.Abilities["Strength"] / 3;
+            Console.WriteLine("\n\n\t\t\t\t- Commence Battle -");
+            Console.WriteLine($"\n\t\t\t[6]  Attack\t\t\tPlayer Health: {Player.Health}\n\t\t\t[OR] Any key to exit\t\tEnemy Health: {target.Health}");
+            Console.Write("\t\t\tResponse: ");
+            var response = Console.ReadLine();
 
-            if (attackRoll >= target.AC)
+            while (target.Health > 1 && response.Equals("6"))
             {
-                var damage = rng.Next(1, 11) + Player.Abilities["Strength"] / 3; // Assuming weapon damage of 1d10
-                target.Health -= damage;
-                Console.WriteLine($"You dealt {damage} damage to {target.Name}. Remaining Enemy Health: " + target.Health);
+                Random rng = new Random();
+                var attackRoll = rng.Next(1, 21) + Player.ListOfAbilities[4].Stat / 3;
 
-                if (target.Health <= 0)
+                if (attackRoll >= target.AC)
                 {
-                    Console.WriteLine($"You defeated {target.Name}.");
+                    var damage = rng.Next(1, 11) + Player.ListOfAbilities[4].Stat / 3; // Assuming weapon damage of 1d10
+                    target.Health -= damage;
+                    Console.WriteLine($"\n\t\t\tYou dealt {damage} damage to {target.Name}.");
 
-                    Player.XP += 50;
-
-                    Player.ExpCheck(); // Award some XP
-                    Console.WriteLine("\n\tExperience: " + Player.XP + " Level: " + Player.Level);
-                    Console.WriteLine();
-
-                    target.Health = 20; // monster respawn
-                }
-                else
-                {
-                    // Enemy counterattack
-                    var enemyAttackRoll = rng.Next(1, 21) + target.AttackValue;
-
-                    if (enemyAttackRoll >= Player.AC)
+                    if (target.Health <= 0)
                     {
-                        var enemyDamage = rng.Next(1, 11) + target.AttackValue;
-                        Player.Health -= enemyDamage;
-                        Console.WriteLine($"{target.Name} dealt {enemyDamage} damage to you. Remaining Player Health: " + Player.Health);
+                        Console.WriteLine($"\n\t\t\t* * !You defeated {target.Name}! * *");
+
+                        Player.XP += 50;
+
+                        if (!Player.ExpCheck()) // Award some XP
+                            Console.WriteLine("\n\t\t\tCurrent Exp: " + Player.XP + " Current Level: " + Player.Level);
+
+                        Console.WriteLine();
+
+                        target.Health = 20; // monster respawn
+                        Player.Health = 20;
+                        return;
                     }
                     else
                     {
-                        Console.WriteLine($"{target.Name} missed.");
+                        // Enemy counterattack
+                        var enemyAttackRoll = rng.Next(1, 21) + target.AttackValue;
+
+                        if (enemyAttackRoll >= Player.AC)
+                        {
+                            var enemyDamage = rng.Next(1, 11) + target.AttackValue;
+                            Player.Health -= enemyDamage;
+                            Console.WriteLine($"\t\t\t{target.Name} dealt {enemyDamage} damage to you.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"\n\t\t\t\t* {target.Name} missed *");
+                        }
                     }
                 }
+                else
+                {
+                    Console.WriteLine("\n\t\t\t\t* You missed *");
+                }
+
+                Console.WriteLine($"\n\t\t\t[6]  Attack Again \t\tPlayer Health: {Player.Health}\n\t\t\t[OR] Any key to exit\t\tEnemy Health: {target.Health}");
+                Console.Write("\t\t\tResponse: ");
+                response = Console.ReadLine();
             }
-            else
-            {
-                Console.WriteLine("You missed.");
-            }
+            Console.WriteLine("\n\t\t\t\t- Exiting Battle -\n\n");
+            target.Health = 20;
+            Player.Health = 20;
         }
 
         private void ProcessBuy(NPC target, string itemName)
@@ -277,7 +295,7 @@ namespace ConsoleApp1
             {
                 Player.Gold -= item.Value;
                 Equipment equipment = new Equipment();
-                equipment.Name = itemName;  
+                equipment.Name = itemName;
                 equipment.Value = item.Value;
 
                 switch (itemName)
@@ -295,8 +313,7 @@ namespace ConsoleApp1
                         equipment.Type = EquipmentType.Amulet;
                         break;
                 }
-
-                equipment.Type = EquipmentType.Armor;
+                equipment.IsInInventory = true;
                 Player.Inventory.Add(equipment);
                 Console.WriteLine($"\nYou bought {equipment.Name}. Gold Remaining: " + Player.Gold);
                 Console.WriteLine();
@@ -312,19 +329,19 @@ namespace ConsoleApp1
         private void ProcessAcceptQuest(NPC target, string questTitle)
         {
             var quest = target.Quests.FirstOrDefault(q => q.Title == questTitle);
-            Player.Quest = quest.Title;
+            //Player.Quest = quest.Title;
         }
 
         private void ProcessCompleteQuest(string questname)
         {
-            Player.Quest = "None";
-            Console.WriteLine("\nCompleted " + questname);
+            Quest q = Player.Quest;
+            Player.Quest = null;
+            Console.WriteLine("\n\t\t\t** Completed Quest Title: " + questname + " **");
 
-            Player.XP += 20;
+            Player.XP += q.RewardXP;
 
-            Player.ExpCheck();
-
-            Console.WriteLine("\n\tExperience: " + Player.XP + " Level: " + Player.Level + "\n");
+            if (!Player.ExpCheck())
+                Console.WriteLine("\n\t\tExperience: " + Player.XP + " Level: " + Player.Level + "\n");
         }
 
         private void ProcessUseItem(string itemName)
@@ -366,9 +383,9 @@ namespace ConsoleApp1
             var item = Player.Inventory.FirstOrDefault(i => i.Name == itemName);
             if (item != null && item.IsEquipped)
             {
-                Player.Inventory.Remove( item );
+                Player.Inventory.Remove(item);
                 item.IsEquipped = false;
-                Player.Inventory.Add( item );
+                Player.Inventory.Add(item);
             }
             Console.WriteLine("\n\t***  You are squishy!  ****\n");
         }
@@ -377,14 +394,15 @@ namespace ConsoleApp1
         {
             if (Player.Inventory.Count == 0)
             {
-                Console.WriteLine("Your inventory is empty.");
+                Console.WriteLine("\n\t\t\t** Your inventory is empty. **");
             }
             else
             {
-                Console.WriteLine("\n\tYour inventory contains: ");
+                Console.WriteLine("\n\t\t\t\tCurrent Inventory" +
+                                  "\n\t\t\t------------------------------------");
 
                 foreach (var item in Player.Inventory)
-                    Console.WriteLine($"\t- {item.Name} ({item.Type})\n\t- Description: {item.Description}\n\t- Value: {item.Value} gold\n");
+                    Console.WriteLine($"\t\t\t- {item.Name} ({item.Type})\n\t\t\t- Description: {item.Description}\n\t\t\t- Value: {item.Value} gold\n");
 
                 Console.WriteLine();
             }
@@ -396,21 +414,28 @@ namespace ConsoleApp1
             Console.WriteLine($"You received {equipment.Name}. It has been added to your inventory.");
         }
 
-        public void PrintStore()
+        public List<Equipment> PrintStore(List<Equipment> store)
         {
             var item = NPCs.FirstOrDefault(i => i.Type == NPCType.Merchant);
-            Console.WriteLine("\n\t**** View Merchandise **** ");
+            string str = "\n\t\t\t*******************************\n\t\t\t*        General Store        *" +
+                "\n\t\t\t*       Merchant  Items       *" +
+                $"\n\t\t\t*       Current Gold: ${Player.Gold}     *" +
+                "\n\t\t\t*******************************";
+            Console.WriteLine(str);
             var count = 1;
-            foreach (var i in item.Items)
+
+            foreach (Equipment e in store)
             {
-                Console.WriteLine("\t[" + count + "] " + i.Name + " $" + i.Value);
+                Console.WriteLine("\t\t\t[" + count + "] \t" + e.Name + "   $" + e.Value);
                 count++;
             }
-            
+
             Console.WriteLine();
+
+            return store;
         }
 
     }
 }
-   
+
 

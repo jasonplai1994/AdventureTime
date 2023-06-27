@@ -11,18 +11,64 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConsoleApp1.Migrations
 {
     [DbContext(typeof(GameDbContext))]
-    [Migration("20230622050946_UpdateDbContext")]
-    partial class UpdateDbContext
+    [Migration("20230626235200_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.7")
+                .HasAnnotation("ProductVersion", "7.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("ConsoleApp1.Equipment", b =>
+            modelBuilder.Entity("ConsoleApp1.Models.Armor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Aspects")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("DamageReduction")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsEquipped")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsUseable")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Rarity")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Stats")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Armors");
+                });
+
+            modelBuilder.Entity("ConsoleApp1.Models.Equipment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,6 +76,9 @@ namespace ConsoleApp1.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
+
+                    b.Property<bool>("IsConsumable")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsEquipped")
                         .HasColumnType("tinyint(1)");
@@ -44,9 +93,6 @@ namespace ConsoleApp1.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("PlayerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
@@ -57,12 +103,10 @@ namespace ConsoleApp1.Migrations
 
                     b.HasIndex("NPCId");
 
-                    b.HasIndex("PlayerId");
-
-                    b.ToTable("Equipments");
+                    b.ToTable("EquipmentStore", (string)null);
                 });
 
-            modelBuilder.Entity("ConsoleApp1.Game", b =>
+            modelBuilder.Entity("ConsoleApp1.Models.Game", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -91,25 +135,7 @@ namespace ConsoleApp1.Migrations
                     b.ToTable("Games");
                 });
 
-            modelBuilder.Entity("ConsoleApp1.Item", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Items");
-                });
-
-            modelBuilder.Entity("ConsoleApp1.NPC", b =>
+            modelBuilder.Entity("ConsoleApp1.Models.NPC", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -141,19 +167,13 @@ namespace ConsoleApp1.Migrations
                     b.ToTable("NPCs");
                 });
 
-            modelBuilder.Entity("ConsoleApp1.Player", b =>
+            modelBuilder.Entity("ConsoleApp1.Models.Player", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<int>("AC")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AmuletId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ArmorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -173,17 +193,7 @@ namespace ConsoleApp1.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Quest")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("RingId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UseableId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WeaponId")
+                    b.Property<int?>("QuestId")
                         .HasColumnType("int");
 
                     b.Property<int>("XP")
@@ -191,20 +201,12 @@ namespace ConsoleApp1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AmuletId");
-
-                    b.HasIndex("ArmorId");
-
-                    b.HasIndex("RingId");
-
-                    b.HasIndex("UseableId");
-
-                    b.HasIndex("WeaponId");
+                    b.HasIndex("QuestId");
 
                     b.ToTable("Players");
                 });
 
-            modelBuilder.Entity("ConsoleApp1.Quest", b =>
+            modelBuilder.Entity("ConsoleApp1.Models.Quest", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -234,20 +236,16 @@ namespace ConsoleApp1.Migrations
                     b.ToTable("Quests");
                 });
 
-            modelBuilder.Entity("ConsoleApp1.Equipment", b =>
+            modelBuilder.Entity("ConsoleApp1.Models.Equipment", b =>
                 {
-                    b.HasOne("ConsoleApp1.NPC", null)
+                    b.HasOne("ConsoleApp1.Models.NPC", null)
                         .WithMany("Items")
                         .HasForeignKey("NPCId");
-
-                    b.HasOne("ConsoleApp1.Player", null)
-                        .WithMany("Inventory")
-                        .HasForeignKey("PlayerId");
                 });
 
-            modelBuilder.Entity("ConsoleApp1.Game", b =>
+            modelBuilder.Entity("ConsoleApp1.Models.Game", b =>
                 {
-                    b.HasOne("ConsoleApp1.Player", "Player")
+                    b.HasOne("ConsoleApp1.Models.Player", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -256,78 +254,39 @@ namespace ConsoleApp1.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("ConsoleApp1.NPC", b =>
+            modelBuilder.Entity("ConsoleApp1.Models.NPC", b =>
                 {
-                    b.HasOne("ConsoleApp1.Game", null)
+                    b.HasOne("ConsoleApp1.Models.Game", null)
                         .WithMany("NPCs")
                         .HasForeignKey("GameId");
                 });
 
-            modelBuilder.Entity("ConsoleApp1.Player", b =>
+            modelBuilder.Entity("ConsoleApp1.Models.Player", b =>
                 {
-                    b.HasOne("ConsoleApp1.Equipment", "Amulet")
+                    b.HasOne("ConsoleApp1.Models.Quest", "Quest")
                         .WithMany()
-                        .HasForeignKey("AmuletId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("QuestId");
 
-                    b.HasOne("ConsoleApp1.Equipment", "Armor")
-                        .WithMany()
-                        .HasForeignKey("ArmorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ConsoleApp1.Equipment", "Ring")
-                        .WithMany()
-                        .HasForeignKey("RingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ConsoleApp1.Equipment", "Useable")
-                        .WithMany()
-                        .HasForeignKey("UseableId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ConsoleApp1.Equipment", "Weapon")
-                        .WithMany()
-                        .HasForeignKey("WeaponId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Amulet");
-
-                    b.Navigation("Armor");
-
-                    b.Navigation("Ring");
-
-                    b.Navigation("Useable");
-
-                    b.Navigation("Weapon");
+                    b.Navigation("Quest");
                 });
 
-            modelBuilder.Entity("ConsoleApp1.Quest", b =>
+            modelBuilder.Entity("ConsoleApp1.Models.Quest", b =>
                 {
-                    b.HasOne("ConsoleApp1.NPC", null)
+                    b.HasOne("ConsoleApp1.Models.NPC", null)
                         .WithMany("Quests")
                         .HasForeignKey("NPCId");
                 });
 
-            modelBuilder.Entity("ConsoleApp1.Game", b =>
+            modelBuilder.Entity("ConsoleApp1.Models.Game", b =>
                 {
                     b.Navigation("NPCs");
                 });
 
-            modelBuilder.Entity("ConsoleApp1.NPC", b =>
+            modelBuilder.Entity("ConsoleApp1.Models.NPC", b =>
                 {
                     b.Navigation("Items");
 
                     b.Navigation("Quests");
-                });
-
-            modelBuilder.Entity("ConsoleApp1.Player", b =>
-                {
-                    b.Navigation("Inventory");
                 });
 #pragma warning restore 612, 618
         }

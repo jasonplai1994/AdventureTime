@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1
+namespace ConsoleApp1.Models
 {
     public enum EquipmentType
     {
@@ -23,7 +23,7 @@ namespace ConsoleApp1
         public string? LegendarySkill { get; set; } // Special functionality tied to this equipment
         public string? Description { get; set; }
         public bool IsEquipped { get; set; } = false;
-        public bool IsUseable { get; set; } = true;
-        
+        public bool IsConsumable { get; set; } = false;
+        public bool IsInInventory { get; set; } = false;
     }
 }
