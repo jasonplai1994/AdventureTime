@@ -3,15 +3,15 @@
 Welcome to AdventureTime, a simple console-based game written in C# utilizing MySQL!
 
 In Order to run this on your local machine you will need the following:
-  - Text Editor (preferably Visual Studio)
-  - MySQL Server and MySQL Workbench
+  - Text Editor (preferably Visual Studio) https://visualstudio.microsoft.com/
+  - MySQL Server and MySQL Workbench https://dev.mysql.com/downloads/installer/
 
 After Obtaining the necessary software:
   - Open your machines System Environment Variables and inside System Variables save the connection string under the name localhost
       - Your connection string should look like this: Server=localhost;Database=adventuretime;user=root;password=password;
       - Note that MySQL user and password need to be set your user and password when you installed MySQL
   - Next, Open up MySQL Workbench and log into localhost, inside the schemas tab create a new schema called adventuretime
-  - If you haven't already, git clone into a directory of your choice and open it in Visual  Studio or the corresponding Text Editor
+  - If you haven't already, git clone(or Download) the repository into a directory of your choice and open it in Visual  Studio or the corresponding Text Editor
   - Now, Open up the Migrations Folder and delete everything inside
   - Next, go to Tools -> NuGet Package Manager -> Package Manager Console
   - Inside the Package Manager Console, you need to run the following commands
