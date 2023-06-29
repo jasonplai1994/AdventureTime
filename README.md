@@ -23,6 +23,8 @@ After Obtaining the necessary software:
   * You should be able to run ConsoleApp1 and try the game out! *
 
 Important Things To Note:
+- localhost connection string needs to be set in System Environment Variables
 - SQL Server should be running on your machine
 - Schema needs to be created as adventuretime
-- Migration need to be added
+- Migration needs to be added
+- Try Building and then adding the migration
