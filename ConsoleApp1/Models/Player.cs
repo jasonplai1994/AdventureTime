@@ -22,11 +22,10 @@ namespace ConsoleApp1.Models
         public int Level { get; set; } = 1;
         public string Location { get; set; } = "Start";
         public string Description { get; set; } = "NEW PLAYER";
-        public int Gold { get; set; } = 50;
-        [NotMapped]
+        public int Gold { get; set; } = 100;
         public List<Equipment> Inventory { get; set; } = new List<Equipment>();
-        public List<Quest> Quest { get; set; } = new List<Quest>();
-        public List<Ability> ListOfAbilities { get; set; } = new List<Ability> { };
+        public List<Quest> PlayerQuests { get; set; } = new List<Quest>();
+        public List<Ability> ListOfAbilities { get; set; } = new List<Ability>();
         [NotMapped]
         private Random random = new Random();
 
@@ -63,43 +62,6 @@ namespace ConsoleApp1.Models
             ListOfAbilities.Add(a3);
             ListOfAbilities.Add(a4);
             ListOfAbilities.Add(a5);
-
-            Quest q1 = new Quest
-            {
-                Title = "1",
-                Description = "Quest Number 1",
-                IsCompleted = false,
-                RewardXP = 50
-            };
-
-            Quest q2 = new Quest
-            {
-                Title = "2",
-                Description = "Quest Number 2",
-                IsCompleted = false,
-                RewardXP = 150
-            };
-
-            Quest q3 = new Quest
-            {
-                Title = "3",
-                Description = "Quest Number 3",
-                IsCompleted = false,
-                RewardXP = 250
-            };
-
-            Quest q4 = new Quest
-            {
-                Title = "4",
-                Description = "Quest Number 4",
-                IsCompleted = false,
-                RewardXP = 100
-            };
-
-            Quest.Add(q1);
-            Quest.Add(q2);
-            Quest.Add(q3);
-            Quest.Add(q4);
         }
 
         public void Print()

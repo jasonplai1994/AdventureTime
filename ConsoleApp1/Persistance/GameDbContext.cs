@@ -11,10 +11,11 @@ using System;
 
 namespace ConsoleApp1;
 
-public class GameDbContext : DbContext 
+public class GameDbContext : DbContext
 {
     public DbSet<Game> Games { get; set; } = null!;
-    public DbSet<Quest> Quests { get; set; } = null!;
+    public DbSet<Quest> GameQuests { get; set; } = null!;
+    public DbSet<Quest> PlayerQuests { get; set; } = null!;
     public DbSet<Player> Players { get; set; } = null!;
     public DbSet<NPC> NPCs { get; set; } = null!;
     public DbSet<Equipment> EquipmentInventory { get; set; } = null!;
@@ -41,8 +42,17 @@ public class GameDbContext : DbContext
             .ToTable("EquipmentInventory") // Configure EquipmentInventory table
             .HasKey(e => e.Id);
 
-        modelBuilder.Entity<Equipment>()
+        /*modelBuilder.Entity<Equipment>()
             .ToTable("EquipmentStore") // Configure EquipmentStore table
             .HasKey(e => e.Id);
+
+        modelBuilder.Entity<Quest>()
+            .ToTable("GameQuests") // Configure EquipmentInventory table
+            .HasKey(e => e.Id);*/
+
+        modelBuilder.Entity<Quest>()
+            .ToTable("PlayerQuests") // Configure EquipmentStore table
+            .HasKey(e => e.Id);
+
     }
 }

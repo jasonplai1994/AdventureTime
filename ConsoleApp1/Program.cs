@@ -14,11 +14,15 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        bool running = true;
         GameService gameService = new GameService(new GameDbContext());
+        List<Quest> gameQuests = gameService.GetGameQuests();
+        List<Equipment> equipmentStore = gameService.GetGameStore();
+
+        bool running = true;
+        
         Game game = new Game();
         var res = "";
-
+        
         while (res.Equals("")) { 
             res = Login(gameService);
             if(res.Equals(""))
@@ -27,17 +31,17 @@ public class Program
         Console.ForegroundColor = ConsoleColor.White;
 
         if (res.Equals("NEW"))
-            game.InitializeGame(null);
+            game.InitializeGame(null, gameService, gameQuests, equipmentStore);
         else
         {
-            game.InitializeGame(gameService.GetPlayer(res));
-            game.Player.ListOfAbilities = gameService.GetAbilities();
+            game.InitializeGame(gameService.GetPlayer(res), gameService, gameQuests, equipmentStore);
+            //game.Player.ListOfAbilities = gameService.GetAbilities();
             //gameService.GetPlayerQuests(game.Player);
-            game.Player.Quest = gameService.GetQuests();
+            //game.Player.Quest = gameService.GetQuests(game.Player);
         }
 
         game.Player.Print();
-        game.Player.Inventory = gameService.GetInventory();  //Load Player Inventory from Database
+        //game.Player.Inventory = gameService.GetInventory();  //Load Player Inventory from Database
 
         // Play the game
         Playing(game, running, gameService);
@@ -48,7 +52,6 @@ public class Program
 
     public static void Playing(Game game, bool running, GameService gameService)
     {
-        List<Quest> quests;
         List<Equipment> store;
 
         while (running)
@@ -65,54 +68,73 @@ public class Program
                     game.ProcessCommand($"talk {npcName}");
                     break;
                 case "2":
-                    if (game.Player.Quest.Capacity != 0)
-                        quests = PrintQuests(game.Player.Quest);
+                    if (game.Player.PlayerQuests.Capacity != 0)
+                        PrintQuests(game.Player.PlayerQuests, game.Quests);
                     else
                         Console.Write("\n\t\t\t\t  - You Have No Active Quests! -\n");
 
-                    Console.Write("\n\t\t\t\tWould you like to add one?\n\n\t\t\t\t[1] Yes  [2] No  Response: ");
+                    Console.Write("\n\t\t\t\tWould you like to add one?\n\n\t\t\t\t[1] Yes  [Or] Any Key to Abort  Response: ");
                     var input = Console.ReadLine();
                     isValidInput = int.TryParse(input, out int numb);
                     if(numb == 1)
                     {
-                        quests = PrintQuests(game.Player.Quest);
+                        PrintQuests(game.Player.PlayerQuests, game.Quests);
                         Console.Write("\n\t\t\t\tPlease Select An Option: ");
                         input = Console.ReadLine();
                         isValidInput = int.TryParse(input, out int number);
 
-                        if (number < 0 || number > quests.Count)
+                        if (number < 0 || number > game.Quests.Count)
                             Console.WriteLine("\n\t\t\t\t* Not a Valid Option! Try Again. *");
                         else if(!input.Equals(""))
                         {
-                            game.Player.Quest[numb].IsActive = true;
-                            Console.WriteLine("\n\t\t\t\t* Accepted Quest Titled: " + quests[number - 1].Title + " *");
+                            game.Player.PlayerQuests.Add(game.Quests[number - 1]);
+                            Console.WriteLine("\n\t\t\t\t* Accepted Quest Titled: " + game.Quests[number - 1].Title + " *");
                         }
                     }
                     else
                         continue;
                     break;
                 case "3":
-                    /*if(game.Player.Quest == null)
+                    if(game.Player.PlayerQuests.Count < 1)
                     {
                         Console.WriteLine("\n\t\t\tYou Have No Active Quests!");
                         continue;
                     }
+                    string str = "\n\t\t\t\t     [Option] Current Quests\n" +
+                                    "\t\t\t\t-------------------------------------";
+                    Console.WriteLine(str);
 
-                    Console.WriteLine("\n\t\t\t\t- Current Active Quest -");
-                    Console.WriteLine("\t\t\t\tTitle: " + game.Player.Quest.Title + "\n\t\t\t\tDescription: " + game.Player.Quest.Description +
-                                        "\n\t\t\t\tCompleted: " + game.Player.Quest.IsCompleted + "\n\t\t\t\tExperience: " + game.Player.Quest.RewardXP);
-                    Console.Write("\n\t\t\tWould you like to Complete this Quest?\n\t\t\t[1] Yes  [2] No  Response: ");*/
+                    int count = 0;
+                    foreach (var item in game.Player.PlayerQuests)
+                    {
+                        Console.WriteLine("\n\t\t\t\t  [" + ++count + "]   Title: " + item.Title + "\n\t\t\t\t\tDescription: " + item.Description +
+                            "\n\t\t\t\t\tCompleted: " + item.IsCompleted + "\n\t\t\t\t\tExperience: " + item.RewardXP);
+                    }
+
+                    Console.Write("\n\t\t\t    Please Select a Quest to Complete! Response: ");
                     var res = Console.ReadLine();
                     isValidInput = int.TryParse(res, out int num);
 
-                    if (num != 1)
-                        continue;
+                    if (num < 1 || num > game.Player.PlayerQuests.Count())
+                    {
+                        Console.WriteLine("\n\t\t\t    * Input Entered is not an Option on the List *");
+                        break;
+                    }
 
-                    //game.ProcessCommand($"complete {game.Player.Quest.Title} from QuestGiver");
-                    gameService.SavePlayer(game.Player);
+                    if (!game.Player.PlayerQuests[num - 1].IsCompleted)
+                    {
+                        game.Player.PlayerQuests[num - 1].IsCompleted = true;
+                        Console.WriteLine($"\n\t\t\t* Quest: {game.Player.PlayerQuests[num - 1].Title} is now marked as completed! Keep Grindin'!");
+                        game.Player.XP += game.Player.PlayerQuests[num - 1].RewardXP;
+                        game.Player.ExpCheck();
+                        gameService.SavePlayer(game.Player);
+                        break;
+                    }
+
+                    Console.WriteLine("\n\t\t\t* It seems the Quest you select was already marked completed! *");
                     break;
                 case "4":
-                    store = game.PrintStore(gameService.GetStore());
+                    store = game.PrintStore(gameService.GetGameStore());
                     Console.Write("\n\t\t\tSelect Item to Buy: ");
                     res = Console.ReadLine();
                     isValidInput = int.TryParse(res, out num);
@@ -122,7 +144,7 @@ public class Program
 
                     game.Player.Inventory.Add(store[num - 1]);
                     game.Player.Gold -= store[num - 1].Value;
-                    gameService.SaveToInventory(store[num - 1]);
+                    gameService.SavePlayer(game.Player);
                     Console.WriteLine("\n\t\t** You successfully bought " + store[num - 1].Name + " **\n\t\t\tRemaining Gold: $" + game.Player.Gold);
                     break;
                 case "5":
@@ -150,26 +172,13 @@ public class Program
                     running = false;
                     if (!game.Player.Description.Equals("NEW PLAYER"))
                     {
-                        Console.Write($"\t\t\t[1] Save Exisiting Player {game.Player.Description}\n\t\t\t[2] Save As New Player\n\t\t\t[OR] Any Key to Exit\n\t\t\tResponse: ");
+                        Console.Write($"\t\t\t[1] Save Exisiting Player {game.Player.Description}\n\t\t\t[OR] Any Key to Exit Without Saving\n\t\t\tResponse: ");
                         var response = Console.ReadLine();
                         isValidInput = int.TryParse(response, out num);
                         if(num == 1)
                         {
                             gameService.SavePlayer(game.Player);
                             Console.WriteLine($"\t\t\t\t   Successfully Saved {game.Player.Description}");
-                        }
-                        if(num == 2)
-                        {
-                            Console.Write("\n\t\t\t\tEnter Player Name To Save: ");
-                            response = Console.ReadLine();
-                            while(response.Equals(""))
-                            {
-                                Console.WriteLine("\t\t\t\tDetected No Input Try Again!");
-                                Console.Write("\t\t\t\tEnter Player Name To Save: ");
-                                response = Console.ReadLine();
-                            }
-                            game.Player.Description = response;
-                            gameService.SavePlayer(game.Player);
                         }
                     }
                     else
@@ -179,15 +188,15 @@ public class Program
                         if(!name.Equals(""))
                         {
                             game.Player.Description = name;
-                            Console.WriteLine(gameService.SavePlayer(game.Player));
+                            Console.WriteLine(gameService.SaveNewPlayer(game.Player));
                             Console.WriteLine($"\t\t\t\t   Successfully Saved {name}");
                         }
-                        else
-                            Console.WriteLine("\t\t\t\t* * * UNSAVED * * *");
                     }
                     break;
                 default:
-                    Console.WriteLine("Invalid option");
+                    Console.Clear();
+                    Console.WriteLine("\t\t\t\t    Invalid option. Please Try Again!\n");
+                    game.Player.Print();
                     break;
             }
         }
@@ -195,7 +204,7 @@ public class Program
 
     public static void PrintMenu()
     {
-        String str = "\n\t\t\t\t\t - Menu Commands - \n" +
+        string str = "\n\t\t\t\t\t - Menu Commands - \n" +
         "\t\t\t\t\t-------------------\n" +
         "\t\t\t\t\t[1]  Talk to NPC\n" +
         "\t\t\t\t\t[2]  Show Active Quests\n" +
@@ -209,45 +218,36 @@ public class Program
         "\t\t\t\t\t[99] Exit game\n";
 
         Console.Write(str + "\n\t\t\t\t\tResponse: ");
-       
     }
 
-    public static List<Quest> PrintQuests(List<Quest> playerQuests) 
+    public static List<Quest> PrintQuests(List<Quest> playerQuests, List<Quest> Quests) 
     {
-        int count = 0;
-
-        if(playerQuests.Capacity > 0)
+        if(playerQuests.Count != 0) 
         {
             Console.WriteLine("\n\t\t\t\t- Current Active Quest -");
             foreach (var item in playerQuests)
             {
-                if (!item.IsActive)
-                    continue;
-
                 Console.WriteLine("\t\t\t\tTitle: " + item.Title + "\n\t\t\t\tDescription: " + item.Description +
                             "\n\t\t\t\tCompleted: " + item.IsCompleted + "\n\t\t\t\tExperience: " + item.RewardXP + "\n");
             }
-                
         }
 
-        String str = "\n\t\t\t\t[Option] Current Quests Avaliable\n" +
+        string str = "\n\t\t\t\t[Option] Current Quests Avaliable\n" +
         "\t\t\t\t-------------------------------------";
         Console.WriteLine(str);
 
-        foreach (var item in playerQuests)
+        foreach (var item in Quests)
         {
-            /*string output = "";
-            string result = (playerQuests.Contains(quest)) ? " {In Progress}" : "";*/
-            if (item.IsActive)
+            if (playerQuests.Any(p => p.Description.Equals(item.Description)))
                 continue;
 
-            Console.WriteLine("\n\t\t\t\t  [" + ++count + "]   Title: " + item.Title +  "\n\t\t\t\t\tDescription: " + item.Description +
+            Console.WriteLine("\n\t\t\t\t  [" + item.Title + "]   Title: " + item.Title +  "\n\t\t\t\t\tDescription: " + item.Description +
                 "\n\t\t\t\t\tCompleted: " + item.IsCompleted + "\n\t\t\t\t\tExperience: " + item.RewardXP);
         }
         return playerQuests;
     }
 
-    public static String Login(GameService gs)
+    public static string Login(GameService gs)
     {
         List<Player> lst = gs.GetPlayerList();
         String temp = "";

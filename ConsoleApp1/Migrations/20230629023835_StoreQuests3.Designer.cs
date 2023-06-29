@@ -3,6 +3,7 @@ using System;
 using ConsoleApp1;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConsoleApp1.Migrations
 {
     [DbContext(typeof(GameDbContext))]
-    partial class GameDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230629023835_StoreQuests3")]
+    partial class StoreQuests3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,7 +128,7 @@ namespace ConsoleApp1.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("EquipmentInventory", (string)null);
+                    b.ToTable("EquipmentStore", (string)null);
                 });
 
             modelBuilder.Entity("ConsoleApp1.Models.Game", b =>
@@ -256,7 +259,7 @@ namespace ConsoleApp1.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("PlayerQuests", (string)null);
+                    b.ToTable("GameQuests", (string)null);
                 });
 
             modelBuilder.Entity("ConsoleApp1.Models.Ability", b =>

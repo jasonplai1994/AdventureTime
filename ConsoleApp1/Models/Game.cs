@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleApp1.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,6 +8,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Collections.Specialized.BitVector32;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace ConsoleApp1.Models
 {
@@ -16,6 +18,10 @@ namespace ConsoleApp1.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public List<NPC> NPCs { get; set; } = new List<NPC>();
+        [NotMapped]
+        public List<Quest> Quests { get; set; } = new List<Quest>();
+        [NotMapped]
+        public List<Equipment> Store { get; set; } = new List<Equipment>();
         public Player? Player { get; set; }
         public int TurnNumber { get; set; } = 0;
         public PeriodOfDay TimePeriod { get; set; } = PeriodOfDay.Morning;
@@ -23,31 +29,35 @@ namespace ConsoleApp1.Models
         public string Weather { get; set; } = "Clear";
 
         // Initialize Abilities
-        public void InitializeGame(Player saved)
+        public void InitializeGame(Player saved, GameService gameService, List<Quest> q, List<Equipment> e)
         {
             if(saved != null)
             {
                 Player = saved;
+                Store = e;
+                Quests = q;
             }
             else
             {
                 Player = new Player();
                 Random rng = new Random();
                 Player.GenerateAbilities(rng);
+                Store = e;
+                Quests = q;
             }   
 
             NPCs.Add(new NPC
             {
                 Name = "Merchant",
                 Type = NPCType.Merchant,
-                Items = new List<Equipment> {
+                /*Items = new List<Equipment> {
                     new Equipment { Name = "HealthPotion", Value = 10 },
                     new Equipment { Name = "Weapon", Value = 50 },
                     new Equipment { Name = "Armor", Value = 30 },
                     new Equipment { Name = "Ring", Value = 60 },
                     new Equipment { Name = "Amulet", Value = 90 },
                     new Equipment { Name = "Shield", Value = 30 }
-                }
+                }*/
             });
             NPCs.Add(new NPC
             {
@@ -61,6 +71,9 @@ namespace ConsoleApp1.Models
                 Type = NPCType.Enemy
 
             });
+
+            //Store = gameService.GetGameStore();
+            //Quests = gameService.GetGameQuests();
         }
 
         // Play Turn
@@ -214,7 +227,6 @@ namespace ConsoleApp1.Models
             Console.WriteLine($"Description: {Player.Description}");
             Console.WriteLine($"Gold: {Player.Gold}");
             Console.WriteLine($"Inventory: {string.Join(", ", Player.Inventory)}");
-            Console.WriteLine($"Quest: {Player.Quest}");
             /*Console.WriteLine($"Weapon: {Player.Weapon?.Name ?? "None"}");
             Console.WriteLine($"Armor: {Player.Armor?.Name ?? "None"}");
             Console.WriteLine($"Ring: {Player.Ring?.Name ?? "None"}");
@@ -287,7 +299,7 @@ namespace ConsoleApp1.Models
 
         private void ProcessBuy(NPC target, string itemName)
         {
-            var item = target.Items.FirstOrDefault(i => i.Name == itemName);
+            /*//var item = target.Items.FirstOrDefault(i => i.Name == itemName);
 
             if (item == null)
             {
@@ -325,7 +337,7 @@ namespace ConsoleApp1.Models
             else
             {
                 Console.WriteLine("You do not have enough gold.");
-            }
+            }*/
 
         }
 
