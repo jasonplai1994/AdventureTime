@@ -71,9 +71,6 @@ namespace ConsoleApp1.Models
                 Type = NPCType.Enemy
 
             });
-
-            //Store = gameService.GetGameStore();
-            //Quests = gameService.GetGameQuests();
         }
 
         // Play Turn
@@ -105,16 +102,7 @@ namespace ConsoleApp1.Models
             // Implement your own game logic
             var parts = command.Split(' ');
 
-            if (parts.Length == 1)
-            {
-                var action = parts[0];
-
-                if (action == "Inventory")
-                    ProcessInventory();
-
-                return;
-            }
-            else if (parts.Length == 2 && parts[1] == "Enemy")
+            if (parts.Length == 2 && parts[1] == "Enemy")
             {
                 var target = NPCs.FirstOrDefault(npc => npc.Name == parts[1]);
                 var action = parts[0];
@@ -129,7 +117,7 @@ namespace ConsoleApp1.Models
                 }
                 return;
             }
-            else if (parts.Length == 2)
+            if (parts.Length == 2)
             {
                 var action = parts[0];
                 var targetName = parts[1];
@@ -156,7 +144,7 @@ namespace ConsoleApp1.Models
                 }
                 return;
             }
-            else if (parts.Length == 4)
+            /*else if (parts.Length == 4)
             {
                 var action = parts[0];
                 var targetName = parts[3];
@@ -187,7 +175,7 @@ namespace ConsoleApp1.Models
                     Console.WriteLine("Invalid action");
                 }
                 return;
-            }
+            }*/
         }
 
         // Update Time and Weather
@@ -407,7 +395,7 @@ namespace ConsoleApp1.Models
             Console.WriteLine("\n\t***  You are squishy!  ****\n");
         }
 
-        private void ProcessInventory()
+        public void PrintInventory()
         {
             if (Player.Inventory.Count == 0)
             {
@@ -434,16 +422,16 @@ namespace ConsoleApp1.Models
         public List<Equipment> PrintStore(List<Equipment> store)
         {
             var item = NPCs.FirstOrDefault(i => i.Type == NPCType.Merchant);
-            string str = "\n\t\t\t*******************************\n\t\t\t*        General Store        *" +
-                "\n\t\t\t*       Merchant  Items       *" +
-                $"\n\t\t\t*       Current Gold: ${Player.Gold}     *" +
-                "\n\t\t\t*******************************";
+            string str = "\n\t\t\t\t   *******************************\n\t\t\t\t   *        General Store        *" +
+                "\n\t\t\t\t   *       Merchant  Items       *" +
+                $"\n\t\t\t\t   *       Current Gold: ${Player.Gold}     *" +
+                "\n\t\t\t\t   *******************************";
             Console.WriteLine(str);
             var count = 1;
 
             foreach (Equipment e in store)
             {
-                Console.WriteLine("\t\t\t[" + count + "] \t" + e.Name + "   $" + e.Value);
+                Console.WriteLine("\t\t\t\t   [" + count + "] \t" + e.Name + "   $" + e.Value);
                 count++;
             }
 

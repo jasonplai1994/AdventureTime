@@ -125,7 +125,7 @@ namespace ConsoleApp1.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("EquipmentInventory", (string)null);
+                    b.ToTable("EquipmentStore", (string)null);
                 });
 
             modelBuilder.Entity("ConsoleApp1.Models.Game", b =>

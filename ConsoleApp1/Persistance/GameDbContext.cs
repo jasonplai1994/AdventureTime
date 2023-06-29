@@ -41,8 +41,8 @@ public class GameDbContext : DbContext
         modelBuilder.Entity<Equipment>()
             .ToTable("EquipmentInventory") // Configure EquipmentInventory table
             .HasKey(e => e.Id);
-
-        /*modelBuilder.Entity<Equipment>()
+/*
+        modelBuilder.Entity<Equipment>()
             .ToTable("EquipmentStore") // Configure EquipmentStore table
             .HasKey(e => e.Id);
 

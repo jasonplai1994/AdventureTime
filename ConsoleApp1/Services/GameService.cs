@@ -27,18 +27,19 @@ namespace ConsoleApp1.Services
             return Result.Created;
         }
 
-        /*public List<Equipment> GetGameStore()
+        /*public List<Equipment> GetGameStore1()
         {
             DbSet<Equipment> equipmentStore = _dbContext.EquipmentStore;
             
             if(equipmentStore.Count() > 0)  //checks if store is already in the DB
                 return equipmentStore.ToList();
 
-            BuildStore();
+            equipmentStore.AddRange(GetGameStore());
+            _dbContext.SaveChanges();
 
             return _dbContext.EquipmentStore.ToList();
-        }
-
+        }*/
+/*
         public List<Quest> GetGameQuests()
         {
             DbSet<Quest> gameQuests = _dbContext.GameQuests;
@@ -77,7 +78,25 @@ namespace ConsoleApp1.Services
             return Result.Created;
         }*/
 
-        public ErrorOr<Created> SavePlayer(Player player)
+        public ErrorOr<Created> UpdatePlayer(Player player)
+        {
+            if (player.Description.Equals("NEW PLAYER"))
+                return Result.Created;
+
+            /*foreach (var item in player.PlayerQuests)
+                _dbContext.Update(item);
+
+            foreach (var item in player.Inventory)
+                _dbContext.Update(item);*/
+
+
+            _dbContext.Update(player);
+            _dbContext.SaveChanges();
+
+            return Result.Created;
+        }
+
+        /*public ErrorOr<Created> SavePlayer(Player player)
         {
             if (player.Description.Equals("NEW PLAYER"))
                 return Result.Created;
@@ -93,7 +112,7 @@ namespace ConsoleApp1.Services
             _dbContext.SaveChanges();
 
             return Result.Created;
-        }
+        }*/
 
         public ErrorOr<Created> SaveNewPlayer(Player player)
         {
@@ -103,7 +122,7 @@ namespace ConsoleApp1.Services
             return Result.Created;
         }
 
-        public ErrorOr<Created> SaveToInventory(Equipment inn)
+        /*public ErrorOr<Created> SaveToInventory(Equipment inn)
         {
             Equipment e = new Equipment
             {
@@ -120,7 +139,7 @@ namespace ConsoleApp1.Services
             _dbContext.EquipmentInventory.Add(e);
             _dbContext.SaveChanges();
             return Result.Created;
-        }
+        }*/
 
         /*public Player GetPlayer()
         {
@@ -140,7 +159,11 @@ namespace ConsoleApp1.Services
 
         public Player GetPlayer(String name)
         {
-            List<Player> x = _dbContext.Players.Include(p => p.PlayerQuests).Include(p => p.ListOfAbilities).ToList();
+            List<Player> x = _dbContext.Players
+                .Include(p => p.PlayerQuests)
+                .Include(p => p.ListOfAbilities)
+                .Include(p=> p.Inventory)
+                .ToList();
 
             foreach (Player p in x)
                 if (p.Description.Equals(name))
@@ -160,13 +183,13 @@ namespace ConsoleApp1.Services
             return p.Quest;
         }*/
 
-        public List<Quest> GetQuests()
+        /*public List<Quest> GetQuests()
         {
-            /*List<Quest> quests = _dbContext.Quests.OrderByDescending(p => p.Id).ToList();
+            *//*List<Quest> quests = _dbContext.Quests.OrderByDescending(p => p.Id).ToList();
             
-            return quests;*/
+            return quests;*//*
             return null;
-        }
+        }*/
 
        /* public List<Quest> GetQuests(Player player)
         {
@@ -210,7 +233,7 @@ namespace ConsoleApp1.Services
             return _dbContext.Abilities.OrderByDescending(p => p.Id).ToList();
         }*/
 
-        public void ClearStore()
+        /*public void ClearStore()
         {
             DbSet<Equipment> equipmentStore = _dbContext.EquipmentStore;
 
@@ -218,7 +241,7 @@ namespace ConsoleApp1.Services
 
             int rowsAffected = _dbContext.SaveChanges();
             Console.WriteLine($"Rows affected: {rowsAffected}");
-        }
+        }*/
 
         public ErrorOr<Deleted> DropTable(String tableName)
         {
@@ -262,13 +285,6 @@ namespace ConsoleApp1.Services
                 RewardXP = 100
             };
 
-            /*_dbContext.Add(q1);
-            _dbContext.Add(q2);
-            _dbContext.Add(q3);
-            _dbContext.Add(q4);
-
-            _dbContext.SaveChanges();*/
-
             return new List<Quest> { q1, q2, q3, q4 };
         }
 
@@ -306,13 +322,6 @@ namespace ConsoleApp1.Services
                 LegendarySkill = "Temp",
                 Description = "An amulet giving a boost to player luck",
             };
-
-            /*_dbContext.EquipmentStore.Add(e1);
-            _dbContext.EquipmentStore.Add(e2);
-            _dbContext.EquipmentStore.Add(e3);
-            _dbContext.EquipmentStore.Add(e4);
-
-            _dbContext.SaveChanges();*/
 
             return new List<Equipment> { e1, e2, e3, e4 };
         }

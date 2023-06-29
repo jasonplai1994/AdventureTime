@@ -39,7 +39,6 @@ public class Program
             //gameService.GetPlayerQuests(game.Player);
             //game.Player.Quest = gameService.GetQuests(game.Player);
         }
-
         game.Player.Print();
         //game.Player.Inventory = gameService.GetInventory();  //Load Player Inventory from Database
 
@@ -89,6 +88,7 @@ public class Program
                         {
                             game.Player.PlayerQuests.Add(game.Quests[number - 1]);
                             Console.WriteLine("\n\t\t\t\t* Accepted Quest Titled: " + game.Quests[number - 1].Title + " *");
+                            gameService.UpdatePlayer(game.Player);
                         }
                     }
                     else
@@ -127,15 +127,15 @@ public class Program
                         Console.WriteLine($"\n\t\t\t* Quest: {game.Player.PlayerQuests[num - 1].Title} is now marked as completed! Keep Grindin'!");
                         game.Player.XP += game.Player.PlayerQuests[num - 1].RewardXP;
                         game.Player.ExpCheck();
-                        gameService.SavePlayer(game.Player);
+                        gameService.UpdatePlayer(game.Player);  //This works here ....
                         break;
                     }
 
                     Console.WriteLine("\n\t\t\t* It seems the Quest you select was already marked completed! *");
                     break;
                 case "4":
-                    store = game.PrintStore(gameService.GetGameStore());
-                    Console.Write("\n\t\t\tSelect Item to Buy: ");
+                    store = game.PrintStore(game.Store);
+                    Console.Write("\n\t\t\t\t   Select Item to Buy: ");
                     res = Console.ReadLine();
                     isValidInput = int.TryParse(res, out num);
 
@@ -144,8 +144,8 @@ public class Program
 
                     game.Player.Inventory.Add(store[num - 1]);
                     game.Player.Gold -= store[num - 1].Value;
-                    gameService.SavePlayer(game.Player);
-                    Console.WriteLine("\n\t\t** You successfully bought " + store[num - 1].Name + " **\n\t\t\tRemaining Gold: $" + game.Player.Gold);
+                    gameService.UpdatePlayer(game.Player);
+                    Console.WriteLine("\n\t\t\t   ** You successfully bought " + store[num - 1].Name + " **\n\t\t\t\t   Remaining Gold: $" + game.Player.Gold);
                     break;
                 case "5":
                     Console.WriteLine("Enter the item's name: ");
@@ -156,7 +156,7 @@ public class Program
                     game.ProcessCommand($"attack Enemy");
                     break;
                 case "7":
-                    game.ProcessCommand("Inventory");
+                    game.PrintInventory();
                     break;
                 case "8":
                     Console.WriteLine("Select an item to Equip: ");
@@ -177,7 +177,7 @@ public class Program
                         isValidInput = int.TryParse(response, out num);
                         if(num == 1)
                         {
-                            gameService.SavePlayer(game.Player);
+                            gameService.UpdatePlayer(game.Player);
                             Console.WriteLine($"\t\t\t\t   Successfully Saved {game.Player.Description}");
                         }
                     }
