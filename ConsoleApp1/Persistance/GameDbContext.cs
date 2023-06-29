@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System;
+using ConsoleApp1.Models.Equipments;
 
 namespace ConsoleApp1;
 
@@ -21,6 +22,9 @@ public class GameDbContext : DbContext
     public DbSet<Equipment> EquipmentInventory { get; set; } = null!;
     public DbSet<Equipment> EquipmentStore { get; set; } = null!;
     public DbSet<Armor> Armors { get; set; } = null!;
+    public DbSet<Amulet> Amulets { get; set; } = null!;
+    public DbSet<Ring> Rings { get; set; } = null!;
+    public DbSet<Weapon> Weapons { get; set; } = null!;
     public DbSet<Ability> Abilities { get; set; } = null!;
 
     /*public GameDbContext(DbContextOptions<GameDbContext> options) : base(options) { 
