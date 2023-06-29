@@ -134,18 +134,18 @@ public class Program
                     Console.WriteLine("\n\t\t\t* It seems the Quest you select was already marked completed! *");
                     break;
                 case "4":
-                    store = game.PrintStore(game.Store);
+                    game.PrintStore();
                     Console.Write("\n\t\t\t\t   Select Item to Buy: ");
                     res = Console.ReadLine();
                     isValidInput = int.TryParse(res, out num);
 
-                    if (num < 0 || num > store.Count)
+                    if (num < 0 || num > game.Store.Count)
                         continue;
 
-                    game.Player.Inventory.Add(store[num - 1]);
-                    game.Player.Gold -= store[num - 1].Value;
+                    game.Player.Inventory.Add(game.Store[num - 1]);
+                    game.Player.Gold -= game.Store[num - 1].Value;
                     gameService.UpdatePlayer(game.Player);
-                    Console.WriteLine("\n\t\t\t   ** You successfully bought " + store[num - 1].Name + " **\n\t\t\t\t   Remaining Gold: $" + game.Player.Gold);
+                    Console.WriteLine("\n\t\t\t   ** You successfully bought " + game.Store[num - 1].Name + " **\n\t\t\t\t   Remaining Gold: $" + game.Player.Gold);
                     break;
                 case "5":
                     Console.WriteLine("Enter the item's name: ");

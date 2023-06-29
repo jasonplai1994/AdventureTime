@@ -403,11 +403,11 @@ namespace ConsoleApp1.Models
             }
             else
             {
-                Console.WriteLine("\n\t\t\t\tCurrent Inventory" +
-                                  "\n\t\t\t------------------------------------");
+                Console.WriteLine("\n\t\t\t\t\tCurrent Inventory" +
+                                  "\n\t\t\t\t------------------------------------");
 
                 foreach (var item in Player.Inventory)
-                    Console.WriteLine($"\t\t\t- {item.Name} ({item.Type})\n\t\t\t- Description: {item.Description}\n\t\t\t- Value: {item.Value} gold\n");
+                    Console.WriteLine($"\t\t\t\t- {item.Name} ({item.Type})\n\t\t\t\t- Description: {item.Description}\n\t\t\t\t- Value: {item.Value} gold\n");
 
                 Console.WriteLine();
             }
@@ -419,7 +419,7 @@ namespace ConsoleApp1.Models
             Console.WriteLine($"You received {equipment.Name}. It has been added to your inventory.");
         }
 
-        public List<Equipment> PrintStore(List<Equipment> store)
+        public void PrintStore()
         {
             var item = NPCs.FirstOrDefault(i => i.Type == NPCType.Merchant);
             string str = "\n\t\t\t\t   *******************************\n\t\t\t\t   *        General Store        *" +
@@ -429,7 +429,7 @@ namespace ConsoleApp1.Models
             Console.WriteLine(str);
             var count = 1;
 
-            foreach (Equipment e in store)
+            foreach (Equipment e in Store)
             {
                 Console.WriteLine("\t\t\t\t   [" + count + "] \t" + e.Name + "   $" + e.Value);
                 count++;
@@ -437,7 +437,7 @@ namespace ConsoleApp1.Models
 
             Console.WriteLine();
 
-            return store;
+            //return store;
         }
 
     }

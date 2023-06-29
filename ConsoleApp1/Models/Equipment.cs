@@ -24,6 +24,6 @@ namespace ConsoleApp1.Models
         public string? Description { get; set; }
         public bool IsEquipped { get; set; } = false;
         public bool IsConsumable { get; set; } = false;
-        public bool IsInInventory { get; set; } = false;
+        //public bool IsInInventory { get; set; } = false;
     }
 }
