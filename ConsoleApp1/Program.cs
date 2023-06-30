@@ -33,14 +33,11 @@ public class Program
         else
             game.InitializeGame(gameService.GetPlayer(res));
 
-        game.Player.Amulets.Add(game.ListOfAmulets[0]);
-
-        game.Player.Amulets[0].IsEquipped = true;
         // Play the game
-        /*Playing(game, running, gameService);
+        Playing(game, running, gameService);
 
         Console.Clear();
-        Console.WriteLine("\n\n\n\t\t\t\t* * * * THANKS FOR PLAYING ADVENTURE TIME! * * * *\n\n\n");*/
+        Console.WriteLine("\n\n\n\t\t\t\t* * * * THANKS FOR PLAYING ADVENTURE TIME! * * * *\n\n\n");
     }
 
     public static void Playing(Game game, bool running, GameService gameService)
@@ -81,14 +78,12 @@ public class Program
                     game.PrintInventory();
                     break;
                 case "8":
-                    Console.WriteLine("Select an item to Equip: ");
-                    itemName = Console.ReadLine();
-                    game.ProcessCommand($"Equip {itemName}");
+                    game.ProcessEquipItem();
+                    //Save Player?
                     break;
                 case "9":
-                    Console.WriteLine("Select an item to Unequip");
-                    itemName = Console.ReadLine();
-                    game.ProcessCommand($"Unequip {itemName}");
+                    game.ProcessUnequipItem("");
+                    //Save Player?
                     break;
                 case "99":
                     running = false;

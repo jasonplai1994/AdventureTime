@@ -24,6 +24,14 @@ namespace ConsoleApp1.Models
         public string Location { get; set; } = "Start";
         public string Description { get; set; } = "NEW PLAYER";
         public int Gold { get; set; } = 100;
+        public Amulet EquippedAmulet { get; set; } = null;
+        public Ring EquippedRing { get; set; } = null;
+        public Weapon EquippedWeapon { get; set; } = null;
+        public Armor EquippedHeadArmor { get; set; } = null;
+        public Armor EquippedChestArmor { get; set; } = null;
+        public Armor EquippedPantsArmor { get; set; } = null;
+        public Armor EquippedBootsArmor { get; set; } = null;
+        public Armor EquippedGlovesArmor { get; set; } = null;
         public List<Weapon> Weapons { get; set; } = new List<Weapon>();
         public List<Armor> Armors { get; set; } = new List<Armor>();
         public List<Ring> Rings { get; set; } = new List<Ring>();

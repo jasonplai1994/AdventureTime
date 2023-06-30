@@ -41,59 +41,22 @@ namespace ConsoleApp1.Models.Equipments
         public int LevelRequirement { get; set; }
         public int Value { get; set; }
         public bool IsEquipped { get; set; }
-        /*public bool IsEquipped
-        {
-            get => isEquipped;
-            set
-            {
-                if (isEquipped != value)
-                {
-                    isEquipped = value;
-                    if (isEquipped)
-                    {
-                        // Add the equipment's stat to the player's overall stat
-                        for(int i = 0; i < 5; i++)
-                        {
-                            if(Type.Equals(Player.Abilities[i].Type))
-                            {
-                                Console.WriteLine("Before: " + Player.Abilities[i].Stat);
-                                Player.Abilities[i].Stat += Stats;
-                                Console.WriteLine("After: " + Player.Abilities[i].Stat);
-                            }
-                        }
-                        
-                    }
-                    else
-                    {
-                        // Subtract the equipment's stat from the player's overall stat
-                        for (int i = 0; i < 5; i++)
-                        {
-                            if (Type.Equals(Player.Abilities[i].Type))
-                            {
-                                Console.WriteLine("Before: " + Player.Abilities[i].Stat);
-                                Player.Abilities[i].Stat -= Stats;
-                                Console.WriteLine("After: " + Player.Abilities[i].Stat);
-                            }
-                        }
-                    }
-                }
-            }
-        }*/
-        [NotMapped]
-        public Player Player { get; set; }
 
-        public void SetEquipped()
+        public void SetEquipped(Player player)
         {
             if(IsEquipped)
             {
                 // Add the equipment's stat to the player's overall stat
                 for (int i = 0; i < 5; i++)
                 {
-                    if (Type.Equals(Player.Abilities[i].Type))
+                    string str = "" + Type;
+                    string str2 = "" + player.Abilities[i].Type;
+
+                    if (str.Equals(str2))
                     {
-                        Console.WriteLine("Before: " + Player.Abilities[i].Stat);
-                        Player.Abilities[i].Stat += Stats;
-                        Console.WriteLine("After: " + Player.Abilities[i].Stat);
+                        Console.WriteLine("Before: " + player.Abilities[i].Stat);
+                        player.Abilities[i].Stat += Stats;
+                        Console.WriteLine("After: " + player.Abilities[i].Stat);
                     }
                 }
             }
@@ -102,11 +65,14 @@ namespace ConsoleApp1.Models.Equipments
                 // Subtract the equipment's stat from the player's overall stat
                 for (int i = 0; i < 5; i++)
                 {
-                    if (Type.Equals(Player.Abilities[i].Type))
+                    string str = "" + Type;
+                    string str2 = "" + player.Abilities[i].Type;
+
+                    if (str.Equals(str2))
                     {
-                        Console.WriteLine("Before: " + Player.Abilities[i].Stat);
-                        Player.Abilities[i].Stat -= Stats;
-                        Console.WriteLine("After: " + Player.Abilities[i].Stat);
+                        Console.WriteLine("Before: " + player.Abilities[i].Stat);
+                        player.Abilities[i].Stat -= Stats;
+                        Console.WriteLine("After: " + player.Abilities[i].Stat);
                     }
                 }
             }

@@ -139,7 +139,7 @@ namespace ConsoleApp1.Models
                 }
                 else if (action == "Equip")
                 {
-                    ProcessEquipItem(targetName);
+                    //ProcessEquipItem(targetName);
                 }
                 else if (action == "Unequip")
                 {
@@ -368,30 +368,95 @@ namespace ConsoleApp1.Models
             }*/
         }
 
-        private void ProcessEquipItem(string itemName)
+        public void ProcessEquipItem()
         {
-            /*var item = Player.Inventory.FirstOrDefault(i => i.Name == itemName);
-            if (item != null && item is Equipment equipment)
+            Console.Write("\n\t\t\t\tWhat would you like to equip?\n\n\t\t\t\t[1] Amulet\n\t\t\t\t[2] Ring\n\t\t\t\t[3] Weapon\n\t\t\t\t[4] Armors\n\t\t\t\t  [Or] Any Key to Abort  Response: ");
+            var input = Console.ReadLine();
+            var isValidInput = int.TryParse(input, out int numb);
+            if (numb == 1)
             {
-                equipment.IsEquipped = true;
-                Console.WriteLine($"\n\t** You equipped {equipment.Name}. **\n");
+
+                Console.WriteLine("\n\t\t\t\t\tCurrent Amulets In Inventory" +
+                                  "\n\t\t\t\t------------------------------------");
+                int i = 0;
+                foreach (var item in Player.Amulets)
+                    Console.WriteLine($"\t\t\t\t{++i} {item.Name}\n\t\t\t\t- Description: {item.Description}\n\t\t\t\t- Stats: {item.Stats}\n");
+
+                Console.Write("\n\t\t\t\tSelect Amulet to Equip: ");
+                input = Console.ReadLine();
+                isValidInput = int.TryParse(input, out numb);
+
+                if (numb < 1 || numb > Player.Amulets.Count)
+                    return;
+
+                ProcessEquipAmulet(Player.Amulets[numb - 1]);
+                Player.Print();
             }
-            else
-            {
-                Console.WriteLine($"\n\t** You don't have {itemName} in your inventory or it's not a piece of equipment. **\n");
-            }*/
         }
 
-        private void ProcessUnequipItem(string itemName)
+        public void ProcessEquipAmulet(Amulet a)
         {
-            /*var item = Player.Inventory.FirstOrDefault(i => i.Name == itemName);
-            if (item != null && item.IsEquipped)
+            //TODO Check player level with Amulet Level...
+
+            if (Player.EquippedAmulet != null)
             {
-                Player.Inventory.Remove(item);
-                item.IsEquipped = false;
-                Player.Inventory.Add(item);
+                Player.EquippedAmulet.IsEquipped = false;
+                Player.EquippedAmulet.SetEquipped(Player);
+
+                Player.EquippedAmulet = a;
+                Player.EquippedAmulet.IsEquipped = true;
+                Player.EquippedAmulet.SetEquipped(Player);
             }
-            Console.WriteLine("\n\t***  You are squishy!  ****\n");*/
+
+            if (Player.EquippedAmulet == null)
+            {
+                Player.EquippedAmulet = a;
+                Player.EquippedAmulet.IsEquipped = true;
+                Player.EquippedAmulet.SetEquipped(Player);
+            }
+        }
+
+        public void ProcessUnequipAmulet()
+        {
+            //TODO Check player level with Amulet Level...
+
+            Player.EquippedAmulet.IsEquipped = false;
+            Player.EquippedAmulet.SetEquipped(Player);
+            Player.EquippedAmulet = null;
+        }
+        private void ProcessEquipRing(string itemName)
+        {
+
+        }
+
+        private void ProcessEquipWeapon(string itemName)
+        {
+
+        }
+
+        private void ProcessEquipArmors(string itemName)
+        {
+
+        }
+
+        public void ProcessUnequipItem(string itemName)
+        {
+            Console.WriteLine("\n\t\t\t\t\tCurrently Equiped Items\n\t\t\t\t   ---------------------------------");
+            if(Player.EquippedAmulet == null && Player.EquippedAmulet == null && Player.EquippedWeapon == null)
+                Console.WriteLine("\n\t\t\t\t\t * No Items Equipped *");
+
+            if(Player.EquippedAmulet != null)
+                Console.WriteLine("\n\t\t\t\t\t" + Player.EquippedAmulet.Name);
+
+            if (Player.EquippedRing != null)
+                Console.WriteLine("\n\t\t\t\t\t" + Player.EquippedRing.Name);
+
+            if (Player.EquippedWeapon != null)
+                Console.WriteLine("\n\t\t\t\t\t" + Player.EquippedWeapon.Name);
+
+
+            ProcessUnequipAmulet();
+            Player.Print();
         }
 
         public void PrintInventory()
