@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleApp1.Models.Equipments;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -23,45 +24,52 @@ namespace ConsoleApp1.Models
         public string Location { get; set; } = "Start";
         public string Description { get; set; } = "NEW PLAYER";
         public int Gold { get; set; } = 100;
-        public List<Equipment> Inventory { get; set; } = new List<Equipment>();
-        public List<Quest> PlayerQuests { get; set; } = new List<Quest>();
-        public List<Ability> ListOfAbilities { get; set; } = new List<Ability>();
+        public List<Weapon> Weapons { get; set; } = new List<Weapon>();
+        public List<Armor> Armors { get; set; } = new List<Armor>();
+        public List<Ring> Rings { get; set; } = new List<Ring>();
+        public List<Amulet> Amulets { get; set; } = new List<Amulet>();
+        public List<Quest> Quests { get; set; } = new List<Quest>();
+        public List<Ability> Abilities { get; set; } = new List<Ability>();
         [NotMapped]
         private Random random = new Random();
 
-        // Generate Abilities
-        public void GenerateAbilities(Random rng)
+        public Player()
+        {
+            GenerateAbilities();
+        }
+
+        public void GenerateAbilities()
         {
             Ability a1 = new Ability
             {
-                Type = AbilityType.Dexterity,
-                Stat = rng.Next(1, 21)
+                Type = Type.Dexterity,
+                Stat = random.Next(1, 21)
             };
             Ability a2 = new Ability
             {
-                Type = AbilityType.Intelligence,
-                Stat = rng.Next(1, 21)
+                Type = Type.Intelligence,
+                Stat = random.Next(1, 21)
             };
             Ability a3 = new Ability
             {
-                Type = AbilityType.Luck,
-                Stat = rng.Next(1, 21)
+                Type = Type.Luck,
+                Stat = random.Next(1, 21)
             };
             Ability a4 = new Ability
             {
-                Type = AbilityType.Persuasion,
-                Stat = rng.Next(1, 21)
+                Type = Type.Persuasion,
+                Stat = random.Next(1, 21)
             };
             Ability a5 = new Ability
             {
-                Type = AbilityType.Strength,
-                Stat = rng.Next(10, 21)
+                Type = Type.Strength,
+                Stat = random.Next(10, 21)
             };
-            ListOfAbilities.Add(a1);
-            ListOfAbilities.Add(a2);
-            ListOfAbilities.Add(a3);
-            ListOfAbilities.Add(a4);
-            ListOfAbilities.Add(a5);
+            Abilities.Add(a1);
+            Abilities.Add(a2);
+            Abilities.Add(a3);
+            Abilities.Add(a4);
+            Abilities.Add(a5);
         }
 
         public void Print()
@@ -72,11 +80,11 @@ namespace ConsoleApp1.Models
                     "\t\t\t*  - Your player was been generated with these stats -  *\n" +
                     "\t\t\t*               - - Character Stats - -                 *\n" +
                     "\t\t\t*               -----------------------                 *\n" +
-                    $"\t\t\t*\t\t   Dexterity : {ListOfAbilities[0].Stat}\t\t\t*\n" +
-                    $"\t\t\t*\t\t   Intelligence : {ListOfAbilities[1].Stat}\t\t\t*\n" +
-                    $"\t\t\t*\t\t   Luck : {ListOfAbilities[2].Stat}\t\t\t\t*\n" +
-                    $"\t\t\t*\t\t   Persuasion : {ListOfAbilities[3].Stat}\t\t\t*\n" +
-                    $"\t\t\t*\t\t   Strength : {ListOfAbilities[4].Stat}  \t\t\t*\n" +
+                    $"\t\t\t*\t\t   Dexterity : {Abilities[0].Stat}\t\t\t*\n" +
+                    $"\t\t\t*\t\t   Intelligence : {Abilities[1].Stat}\t\t\t*\n" +
+                    $"\t\t\t*\t\t   Luck : {Abilities[2].Stat}\t\t\t\t*\n" +
+                    $"\t\t\t*\t\t   Persuasion : {Abilities[3].Stat}\t\t\t*\n" +
+                    $"\t\t\t*\t\t   Strength : {Abilities[4].Stat}  \t\t\t*\n" +
                     "\t\t\t*            - - Good Luck, Have Fun! - -               *\n" +
                     "\t\t\t*********************************************************";
 
@@ -96,22 +104,22 @@ namespace ConsoleApp1.Models
                     Level++;
                     XP -= 100;
 
-                    ListOfAbilities[0].Stat += random.Next(1, 6);
-                    ListOfAbilities[1].Stat += random.Next(1, 6);
-                    ListOfAbilities[2].Stat += random.Next(1, 6);
-                    ListOfAbilities[3].Stat += random.Next(1, 6);
-                    ListOfAbilities[4].Stat += random.Next(1, 6);
+                    Abilities[0].Stat += random.Next(1, 6);
+                    Abilities[1].Stat += random.Next(1, 6);
+                    Abilities[2].Stat += random.Next(1, 6);
+                    Abilities[3].Stat += random.Next(1, 6);
+                    Abilities[4].Stat += random.Next(1, 6);
                 }
 
                 string str2 = "\n\t\t*********************************************************\n" +
                     "\t\t*                  - You Leveled Up! -                  *\n" +
                     $"\t\t*           Level [{Level - count}] ----> Current Level: [{Level}]          *\n" +
                     "\t\t*         ----------- Updated Stats ------------        *\n" +
-                    $"\t\t*\t\t   Dexterity : {ListOfAbilities[0].Stat}\t\t\t*\n" +
-                    $"\t\t*\t\t   Intelligence : {ListOfAbilities[1].Stat}\t\t\t*\n" +
-                    $"\t\t*\t\t   Luck : {ListOfAbilities[2].Stat}\t\t\t\t*\n" +
-                    $"\t\t*\t\t   Persuasion : {ListOfAbilities[3].Stat}\t\t\t*\n" +
-                    $"\t\t*\t\t   Strength : {ListOfAbilities[4].Stat}\t\t        *\n" +
+                    $"\t\t*\t\t   Dexterity : {Abilities[0].Stat}\t\t\t*\n" +
+                    $"\t\t*\t\t   Intelligence : {Abilities[1].Stat}\t\t\t*\n" +
+                    $"\t\t*\t\t   Luck : {Abilities[2].Stat}\t\t\t\t*\n" +
+                    $"\t\t*\t\t   Persuasion : {Abilities[3].Stat}\t\t\t*\n" +
+                    $"\t\t*\t\t   Strength : {Abilities[4].Stat}\t\t        *\n" +
                     "\t\t*                - - Keep Grinding! - -                 *\n" +
                     "\t\t*********************************************************\n";
                 Console.Write(str2);

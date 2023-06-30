@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConsoleApp1.Migrations
 {
     [DbContext(typeof(GameDbContext))]
-    [Migration("20230629023514_InitialCreate")]
+    [Migration("20230630080953_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -44,52 +44,6 @@ namespace ConsoleApp1.Migrations
                     b.ToTable("Abilities");
                 });
 
-            modelBuilder.Entity("ConsoleApp1.Models.Armor", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Aspects")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("DamageReduction")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<bool>("IsEquipped")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("IsUseable")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Rarity")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("Stats")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Armors");
-                });
-
             modelBuilder.Entity("ConsoleApp1.Models.Equipment", b =>
                 {
                     b.Property<int>("Id")
@@ -103,9 +57,6 @@ namespace ConsoleApp1.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsEquipped")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("IsInInventory")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("LegendarySkill")
@@ -128,7 +79,194 @@ namespace ConsoleApp1.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("EquipmentStore", (string)null);
+                    b.ToTable("EquipmentInventory");
+                });
+
+            modelBuilder.Entity("ConsoleApp1.Models.Equipments.Amulet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Aspects")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("DamageReduction")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsEquipped")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("LevelRequirement")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rarity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Stats")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("Amulets");
+                });
+
+            modelBuilder.Entity("ConsoleApp1.Models.Equipments.Armor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Aspects")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("DamageReduction")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsEquipped")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("LevelRequirement")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rarity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Stats")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("Armors");
+                });
+
+            modelBuilder.Entity("ConsoleApp1.Models.Equipments.Ring", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Aspects")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("DamageReduction")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsEquipped")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("LevelRequirement")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rarity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Stats")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("Rings");
+                });
+
+            modelBuilder.Entity("ConsoleApp1.Models.Equipments.Weapon", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Aspects")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("DamageReduction")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsEquipped")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("LevelRequirement")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rarity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Stats")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("Weapons");
                 });
 
             modelBuilder.Entity("ConsoleApp1.Models.Game", b =>
@@ -259,7 +397,7 @@ namespace ConsoleApp1.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("PlayerQuests", (string)null);
+                    b.ToTable("PlayerQuests");
                 });
 
             modelBuilder.Entity("ConsoleApp1.Models.Ability", b =>
@@ -273,6 +411,34 @@ namespace ConsoleApp1.Migrations
                 {
                     b.HasOne("ConsoleApp1.Models.Player", null)
                         .WithMany("Inventory")
+                        .HasForeignKey("PlayerId");
+                });
+
+            modelBuilder.Entity("ConsoleApp1.Models.Equipments.Amulet", b =>
+                {
+                    b.HasOne("ConsoleApp1.Models.Player", null)
+                        .WithMany("Amulets")
+                        .HasForeignKey("PlayerId");
+                });
+
+            modelBuilder.Entity("ConsoleApp1.Models.Equipments.Armor", b =>
+                {
+                    b.HasOne("ConsoleApp1.Models.Player", null)
+                        .WithMany("Armors")
+                        .HasForeignKey("PlayerId");
+                });
+
+            modelBuilder.Entity("ConsoleApp1.Models.Equipments.Ring", b =>
+                {
+                    b.HasOne("ConsoleApp1.Models.Player", null)
+                        .WithMany("Rings")
+                        .HasForeignKey("PlayerId");
+                });
+
+            modelBuilder.Entity("ConsoleApp1.Models.Equipments.Weapon", b =>
+                {
+                    b.HasOne("ConsoleApp1.Models.Player", null)
+                        .WithMany("Weapons")
                         .HasForeignKey("PlayerId");
                 });
 
@@ -306,11 +472,19 @@ namespace ConsoleApp1.Migrations
 
             modelBuilder.Entity("ConsoleApp1.Models.Player", b =>
                 {
+                    b.Navigation("Amulets");
+
+                    b.Navigation("Armors");
+
                     b.Navigation("Inventory");
 
                     b.Navigation("ListOfAbilities");
 
                     b.Navigation("PlayerQuests");
+
+                    b.Navigation("Rings");
+
+                    b.Navigation("Weapons");
                 });
 #pragma warning restore 612, 618
         }

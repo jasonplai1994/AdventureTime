@@ -160,9 +160,12 @@ namespace ConsoleApp1.Services
         public Player GetPlayer(String name)
         {
             List<Player> x = _dbContext.Players
-                .Include(p => p.PlayerQuests)
-                .Include(p => p.ListOfAbilities)
-                .Include(p=> p.Inventory)
+                .Include(p => p.Quests)
+                .Include(p => p.Weapons)
+                .Include(p => p.Armors)
+                .Include(p => p.Amulets)
+                .Include(p => p.Rings)
+                .Include(p => p.Abilities)
                 .ToList();
 
             foreach (Player p in x)
@@ -249,81 +252,6 @@ namespace ConsoleApp1.Services
             _dbContext.Database.ExecuteSqlRaw(sql);
             
             return Result.Deleted;
-        }
-
-        public List<Quest> GetGameQuests()
-        {
-            Quest q1 = new Quest
-            {
-                Title = "1",
-                Description = "Quest Number 1",
-                IsCompleted = false,
-                RewardXP = 50
-            };
-
-            Quest q2 = new Quest
-            {
-                Title = "2",
-                Description = "Quest Number 2",
-                IsCompleted = false,
-                RewardXP = 150
-            };
-
-            Quest q3 = new Quest
-            {
-                Title = "3",
-                Description = "Quest Number 3",
-                IsCompleted = false,
-                RewardXP = 250
-            };
-
-            Quest q4 = new Quest
-            {
-                Title = "4",
-                Description = "Quest Number 4",
-                IsCompleted = false,
-                RewardXP = 100
-            };
-
-            return new List<Quest> { q1, q2, q3, q4 };
-        }
-
-        public List<Equipment> GetGameStore()
-        {
-            Equipment e1 = new Equipment
-            {
-                Name = "Bronze Sword",
-                Type = EquipmentType.Weapon,
-                Value = 10,
-                LegendarySkill = "Temp",
-                Description = "A bronze sword",
-            };
-            Equipment e2 = new Equipment
-            {
-                Name = "Common Chest Plate",
-                Type = EquipmentType.Armor,
-                Value = 5,
-                LegendarySkill = "Temp",
-                Description = "A regular chest plate",
-            };
-            Equipment e3 = new Equipment
-            {
-                Name = "Ring of Strength",
-                Type = EquipmentType.Ring,
-                Value = 25,
-                LegendarySkill = "Temp",
-                Description = "A ring giving a boost to player strength",
-            };
-            Equipment e4 = new Equipment
-            {
-                Name = "Amulet of Luck",
-                Type = EquipmentType.Amulet,
-                Value = 20,
-                LegendarySkill = "Temp",
-                Description = "An amulet giving a boost to player luck",
-            };
-
-            return new List<Equipment> { e1, e2, e3, e4 };
         }
     }
 }

@@ -8,21 +8,20 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1.Models
 {
-    public enum AbilityType 
-    { 
-        Dexterity, 
+    public enum Type
+    {
+        Dexterity,
         Intelligence,
-        Luck, 
+        Luck,
         Persuasion,
         Strength
     }
-
     public class Ability
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public AbilityType Type { get; set; }
+        public Type Type { get; set; }
         public int Stat { get; set; }
     }
     

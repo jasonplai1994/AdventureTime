@@ -24,11 +24,23 @@ C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.E
 C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
 C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
 C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\obj\Debug\net6.0\ConsoleApp1.csproj.CopyComplete
+C:\Personal Project\AdventureTime\ConsoleApp1\bin\Debug\net6.0\ConsoleApp1.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\ErrorOr.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Humanizer.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Mono.TextTemplating.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\MySqlConnector.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\System.CodeDom.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\System.Text.Encodings.Web.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\System.Text.Json.dll
+C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
 C:\Personal Project\AdventureTime\ConsoleApp1\bin\Debug\net6.0\ConsoleApp1.exe
 C:\Personal Project\AdventureTime\ConsoleApp1\bin\Debug\net6.0\ConsoleApp1.deps.json
 C:\Personal Project\AdventureTime\ConsoleApp1\bin\Debug\net6.0\ConsoleApp1.runtimeconfig.json
-C:\Personal Project\AdventureTime\ConsoleApp1\bin\Debug\net6.0\ConsoleApp1.dll
-C:\Personal Project\AdventureTime\ConsoleApp1\bin\Debug\net6.0\ConsoleApp1.pdb
 C:\Personal Project\AdventureTime\ConsoleApp1\bin\Debug\net6.0\ErrorOr.dll
 C:\Personal Project\AdventureTime\ConsoleApp1\bin\Debug\net6.0\Humanizer.dll
 C:\Personal Project\AdventureTime\ConsoleApp1\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
@@ -62,17 +74,3 @@ C:\Personal Project\AdventureTime\ConsoleApp1\obj\Debug\net6.0\ConsoleApp1.dll
 C:\Personal Project\AdventureTime\ConsoleApp1\obj\Debug\net6.0\refint\ConsoleApp1.dll
 C:\Personal Project\AdventureTime\ConsoleApp1\obj\Debug\net6.0\ConsoleApp1.pdb
 C:\Personal Project\AdventureTime\ConsoleApp1\obj\Debug\net6.0\ConsoleApp1.genruntimeconfig.cache
-C:\Personal Project\AdventureTime\ConsoleApp1\obj\Debug\net6.0\ref\ConsoleApp1.dll
-C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\ErrorOr.dll
-C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Humanizer.dll
-C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
-C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
-C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Abstractions.dll
-C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
-C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Mono.TextTemplating.dll
-C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\MySqlConnector.dll
-C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Pomelo.EntityFrameworkCore.MySql.dll
-C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\System.CodeDom.dll
-C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\System.Text.Encodings.Web.dll
-C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\System.Text.Json.dll
-C:\Users\jason\source\repos\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll

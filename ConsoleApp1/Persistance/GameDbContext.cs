@@ -15,12 +15,12 @@ namespace ConsoleApp1;
 public class GameDbContext : DbContext
 {
     public DbSet<Game> Games { get; set; } = null!;
-    public DbSet<Quest> GameQuests { get; set; } = null!;
+    /*public DbSet<Quest> GameQuests { get; set; } = null!;*/
     public DbSet<Quest> PlayerQuests { get; set; } = null!;
     public DbSet<Player> Players { get; set; } = null!;
     public DbSet<NPC> NPCs { get; set; } = null!;
-    public DbSet<Equipment> EquipmentInventory { get; set; } = null!;
-    public DbSet<Equipment> EquipmentStore { get; set; } = null!;
+/*    public DbSet<Equipment> EquipmentInventory { get; set; } = null!;
+*/    /*public DbSet<Equipment> EquipmentStore { get; set; } = null!;*/
     public DbSet<Armor> Armors { get; set; } = null!;
     public DbSet<Amulet> Amulets { get; set; } = null!;
     public DbSet<Ring> Rings { get; set; } = null!;
@@ -42,9 +42,9 @@ public class GameDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Equipment>()
+        /*modelBuilder.Entity<Equipment>()
             .ToTable("EquipmentInventory") // Configure EquipmentInventory table
-            .HasKey(e => e.Id);
+            .HasKey(e => e.Id);*/
 /*
         modelBuilder.Entity<Equipment>()
             .ToTable("EquipmentStore") // Configure EquipmentStore table
@@ -54,9 +54,9 @@ public class GameDbContext : DbContext
             .ToTable("GameQuests") // Configure EquipmentInventory table
             .HasKey(e => e.Id);*/
 
-        modelBuilder.Entity<Quest>()
+        /*modelBuilder.Entity<Quest>()
             .ToTable("PlayerQuests") // Configure EquipmentStore table
-            .HasKey(e => e.Id);
+            .HasKey(e => e.Id);*/
 
     }
 }
