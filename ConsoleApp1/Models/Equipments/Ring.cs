@@ -23,5 +23,42 @@ namespace ConsoleApp1.Models.Equipments
         public bool IsEquipped { get; set; } = false;
         public int LevelRequirement { get; set; }
         public int Value { get; set; }
+
+        public void SetEquipped(Player player)
+        {
+            if (IsEquipped)
+            {
+                // Add the equipment's stat to the player's overall stat
+                for (int i = 0; i < 5; i++)
+                {
+                    string str = "" + Type;
+                    string str2 = "" + player.Abilities[i].Type;
+
+                    if (str.Equals(str2))
+                    {
+                        Console.WriteLine("Before: " + player.Abilities[i].Stat);
+                        player.Abilities[i].Stat += Stats;
+                        Console.WriteLine("After: " + player.Abilities[i].Stat);
+                    }
+                }
+            }
+            else
+            {
+                // Subtract the equipment's stat from the player's overall stat
+                for (int i = 0; i < 5; i++)
+                {
+                    string str = "" + Type;
+                    string str2 = "" + player.Abilities[i].Type;
+
+                    if (str.Equals(str2))
+                    {
+                        Console.WriteLine("Before: " + player.Abilities[i].Stat);
+                        player.Abilities[i].Stat -= Stats;
+                        Console.WriteLine("After: " + player.Abilities[i].Stat);
+                    }
+                }
+            }
+
+        }
     }
 }

@@ -137,6 +137,23 @@ namespace ConsoleApp1.Models
             return false;
         }
 
+        public void GetBody()
+        {
+            var head = EquippedHeadArmor != null ? EquippedHeadArmor.Name : "No Head Armor";
+            var chest = EquippedChestArmor != null ? EquippedChestArmor.Name : "No Chest Armor";
+            var gloves = EquippedGlovesArmor != null ? EquippedGlovesArmor.Name : "No Gloves";
+            var boots = EquippedBootsArmor != null ? EquippedBootsArmor.Name : "No Boots";
+            var pants = EquippedPantsArmor != null ? EquippedPantsArmor.Name : "No Pants Armor";
+            var ring = EquippedRing != null ? EquippedRing.Name : "No Ring Equipped";
+            var amulet = EquippedAmulet != null ? EquippedAmulet.Name : "No Amulet Equipped";
+            var weapon = EquippedWeapon != null ? EquippedWeapon.Name : "No Weapon Equipped";
+
+            string str = $"\n\t\t\t\t\t{head}\n\n\n\t\t\t\t\t{amulet}\n" +
+                         $"\n\t\t\t\t\t{chest}\n\n\n\t\t\t{gloves}\t\t\t\t\t{gloves}\n\t\t    {ring}" +
+                         $"\n\n\n\n\t\t\t\t\t{pants}\n\n\n\n\n\t\t\t\t{boots}\t\t{boots}";
+            Console.WriteLine(str);
+        }
+
         public override string ToString()
         {
             return JsonSerializer.Serialize(this);
