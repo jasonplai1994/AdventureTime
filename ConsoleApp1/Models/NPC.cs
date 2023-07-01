@@ -20,6 +20,5 @@ namespace ConsoleApp1.Models
         public int Health { get; set; } = 20;
         public int AC { get; set; } = 10; // Default AC value
         public int AttackValue { get; set; } = 5; // Default Attack Value
-        //public List<Equipment> Items { get; set; } = new List<Equipment>(); Danger Equipment does not have its own table...
     }
 }
